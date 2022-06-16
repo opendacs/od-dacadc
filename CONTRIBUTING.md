@@ -17,3 +17,22 @@ Follow these branch naming conventions to keep the branches organize.
 * `u/username/description` All feature branches should have the name of the user creating them and a description of the feature. For example, user `ckometter` is making a contribution to this markdown under the branch `u/ckometter/contributing`.
 * `XX-description` If there is an issue open for that feature, add the issue number `XX` on front for easy identification.
 * `hotfix-description` When creating a hotfix branch, add `hotfix` on front and label the pull request as a hotfix.
+
+# Workflow
+
+We suggest the workflow below to ensure development runs smoothly without jeopardizing the main project.
+
+1. Clone the project, switch to develop branch and create a new feature branch for your feature. 
+```
+$ git clone https://github.com/opendacs/od-dacadc.git
+$ git fetch
+$ git switch develop
+$ git checkout -b [name_of_your_branch] develop
+``` 
+2. Commit changes to your feature branch and push it.
+```
+$ git add .
+$ git commit -m '[your-commit-description]'
+$ git push origin [name-of-your-branch]
+```
+5. When your feature branch is ready to merge to `develop`, create a pull request to review your contribution.
