@@ -1,8 +1,6 @@
 #ifndef AD5791_H
 #define AD5791_H
 
-#include <QMainWindow>
-
 typedef unsigned char byte;
 
 namespace dac_utils

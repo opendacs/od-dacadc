@@ -1,5 +1,4 @@
 #include "ad5791.h"
-#include "./ui_ad5791.h"
 #include "utils.h"
 
 
@@ -297,5 +296,6 @@ uint8_t AD5791::threeByteToVoltage(uint8_t DB1, uint8_t DB2, uint8_t DB3) {
       }
     return voltage;
 }
+
 
 
