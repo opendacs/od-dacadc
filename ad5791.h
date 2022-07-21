@@ -3,7 +3,7 @@
 
 typedef unsigned char byte;
 
-namespace dac_utils
+namespace dac_util
 {
     static const uint8_t n_channels = 4;
     inline uint8_t dac_sync_pins[n_channels];
