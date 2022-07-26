@@ -65,6 +65,7 @@ double AD5791::SetVoltage(uint8_t channel, double voltage, bool update_outputs) 
 
 
     if (voltage < -1 * dac_utils::DAC_FULL_SCALE || voltage > dac_utils::DAC_FULL_SCALE) {
+        Serial.println("VOLTAGE OVERRANGE");
         return 999;
     }
 
@@ -92,7 +93,6 @@ double AD5791::SetVoltage(uint8_t channel, double voltage, bool update_outputs) 
 
         // Updated voltage may be different than voltage parameter because of
         // resolution
-        Serial.println("Data sent!");
         return BytesToVoltage(msg);  // Analog output updated     
     }
 }
