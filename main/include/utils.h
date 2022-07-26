@@ -25,7 +25,7 @@ namespace interface_utils {
 
         while (received != '\r') {
 
-            if (Serial.available()) {
+            if(Serial.available()) {
 
                 received = Serial.read();
 
@@ -46,7 +46,7 @@ namespace interface_utils {
                 }
             }
         }
-        return cmd_size;
+            return cmd_size;
     }
 }
 

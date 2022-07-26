@@ -2,7 +2,7 @@
 #define AD5791_H
 #include <stdint.h>
 #include <SPI.h>
-#include "utils.h"
+#include "include/utils.h"
 using namespace std;
 
 
@@ -11,8 +11,8 @@ typedef unsigned char byte;
 namespace dac_utils
 {
     static const uint8_t n_channels = 4;
-    int const DAC_FULL_SCALE = 10;
-    int const DACSCOUNT = 4; //Define!
+    float const DAC_FULL_SCALE = 10.0;
+    int const DACSCOUNT = 4 ; //Define!
 
     struct Message {
         ///
@@ -38,7 +38,7 @@ namespace dac_utils
         /// a sync_pin_ to HIGH. (block_size*n_blocks <= kdata_len_)
         ///
         uint8_t n_blocks;
-    };
+      };
 }
 
 
@@ -80,15 +80,15 @@ public:
     ///
     uint8_t Initialize(void);
     int LDAC;
-    int dac[dac_utils::DACSCOUNT] = { 12, 13, 14, 15 }; //Define!
-    float GE[dac_utils::DACSCOUNT] = { 1, 1, 1, 1 }; // Offset error
-    float OS[dac_utils::DACSCOUNT] = { 0, 0, 0, 0 }; // Gain error
-    uint8_t intToThreeBytes(int decimal, byte* DB1, byte* DB2, byte* DB3);
-    uint8_t threeByteToInt(byte DB1, byte DB2, byte DB3);
-    uint8_t threeByteToVoltage(uint8_t DB1, uint8_t DB2, uint8_t DB3);
-    uint8_t voltageToDecimal(float voltage, byte* DB1, byte* DB2, byte* DB3);
+    int dac[dac_utils::DACSCOUNT] = {12, 13, 14, 15}; //Define!
+    float GE[dac_utils::DACSCOUNT] = {1, 1, 1, 1}; // Offset error
+    float OS[dac_utils::DACSCOUNT] = {0, 0, 0, 0}; // Gain error
+    uint8_t intToThreeBytes(int decimal, byte *DB1, byte *DB2, byte *DB3);
+    uint32_t threeByteToInt(byte DB1,byte DB2, byte DB3);
+    double threeByteToVoltage(uint8_t DB1, uint8_t DB2, uint8_t DB3);
+    uint8_t voltageToDecimal(float voltage, byte *DB1, byte *DB2, byte *DB3);
     double SetVoltage(uint8_t channel, double voltage, bool update_outputs);
-    uint8_t readDAC(uint8_t channel);
+    double readDAC(uint8_t channel);
 
     ///
     ///

@@ -1,28 +1,6 @@
-#include "ad5791.h"
+#include "include/ad5791.h"
 #include <stdint.h>
 #include <SPI.h>
-
-dac_utils::Message AD5791::ReadDac_Msg(void) {
-
-    dac_utils::Message msg;
-    msg.block_size = 3;
-    msg.n_blocks = 1;
-    msg.msg[0] = 0x90; //Command byte
-    msg.msg[1] = 0x00;
-    msg.msg[2] = 0x00;
-    return msg;
-}
-
-dac_utils::Message AD5791::threeNullBytes_Msg(void) {
-
-    dac_utils::Message msg;
-    msg.block_size = 3;
-    msg.n_blocks = 1;
-    msg.msg[0] = 0x00; //Command byte
-    msg.msg[1] = 0x00;
-    msg.msg[2] = 0x00;
-    return msg;
-}
 
 void AD5791::UpdateAnalogOutputs(void) {
     digitalWrite(LDAC, LOW);
@@ -37,7 +15,7 @@ double AD5791::BytesToVoltage(dac_utils::Message message) {
     byte byte3 = message.msg[2];
 
     // The conversion below is for two's complement
-    uint32_t decimal = ((uint32_t)(((((byte1 & 15) << 8) | byte2) << 8) | byte3));
+    uint32_t decimal = threeByteToInt(byte1, byte2, byte3);
     double voltage;
     if (decimal <= 524287) {
         voltage = decimal * dac_utils::DAC_FULL_SCALE / 524287;
@@ -200,9 +178,30 @@ uint8_t AD5791::Begin(void) {
     Serial.println("Begin done!");
 }
 
+dac_utils::Message AD5791::threeNullBytes_Msg(void) {
 
-uint8_t AD5791::readDAC(uint8_t channel) {
+    dac_utils::Message msg2;
+
+    msg2.msg[0] = 0x00; //Command byte
+    msg2.msg[1] = 0x00;
+    msg2.msg[2] = 0x00;
+    return msg2;
+}
+
+dac_utils::Message AD5791::ReadDac_Msg(void) {
+
+    dac_utils::Message msg;
+
+    msg.msg[0] = 0x90; //Command byte
+    msg.msg[1] = 0x00;
+    msg.msg[2] = 0x00;
+    return msg;
+}
+
+double AD5791::readDAC(uint8_t channel) {
     dac_utils::Message msg = ReadDac_Msg();
+    msg.block_size = 3;
+    msg.n_blocks = 1;
 
     for (uint8_t block = 0; block < msg.n_blocks; block++) {
 
@@ -221,6 +220,8 @@ uint8_t AD5791::readDAC(uint8_t channel) {
 
     uint8_t data[3];
     dac_utils::Message msg2 = threeNullBytes_Msg();
+    msg2.block_size = 3;
+    msg2.n_blocks = 1;
 
     for (uint8_t block = 0; block < msg2.n_blocks; block++) {
 
@@ -229,28 +230,29 @@ uint8_t AD5791::readDAC(uint8_t channel) {
         for (uint8_t db = 0; db < msg2.block_size; db++) {
 
             data[db] = SPI.transfer(msg2.msg[block * msg2.block_size + db]);
+            Serial.println("data received");
+            Serial.println(data[db]);       
         }
 
         digitalWrite(dac_sync_pins[channel], HIGH);
 
     }
 
-    uint8_t voltage = threeByteToVoltage(data[0], data[1], data[2]);
+    double voltage = threeByteToVoltage(data[0], data[1], data[2]);
+    Serial.println("Voltage read is ");
+    Serial.println(voltage);
     return(voltage);
-    Serial.println(voltage, 5);
 
 }
 
-uint8_t AD5791::threeByteToInt(uint8_t DB1, uint8_t DB2, uint8_t DB3) {
-    return ((int)(((((DB1 & 15) << 8) | DB2) << 8) | DB3));
+uint32_t AD5791::threeByteToInt(uint8_t DB1, uint8_t DB2, uint8_t DB3) {
+    return ((uint32_t)(((((DB1 & 15) << 8) | DB2) << 8) | DB3));
 }
 
-uint8_t AD5791::threeByteToVoltage(uint8_t DB1, uint8_t DB2, uint8_t DB3) {
+double AD5791::threeByteToVoltage(uint8_t DB1, uint8_t DB2, uint8_t DB3) {
 
-    int decimal;
-    uint8_t voltage;
-
-    decimal = threeByteToInt(DB1, DB2, DB3);
+    double voltage;
+    uint32_t decimal = threeByteToInt(DB1, DB2, DB3);
 
     if (decimal <= 524287) {
         voltage = decimal * dac_utils::DAC_FULL_SCALE / 524287;
