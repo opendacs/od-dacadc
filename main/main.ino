@@ -1,5 +1,5 @@
-#include "ad5791.h"
-#include "utils.h"
+#include "include/ad5791.h"
+#include "include/utils.h"
 //#include <stdint.h>
 #include <SPI.h>
 
