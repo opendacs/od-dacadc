@@ -1,17 +1,6 @@
 #include "ad5791.h"
-#include "utils.h"
-
-
-dac_utils::Message AD5791::Initialize_Msg(void) {
-
-    dac_utils::Message msg;
-    msg.block_size = 3;
-    msg.n_blocks = 1;
-    msg.msg[0] = 0x20;
-    msg.msg[1] = 0x00;
-    msg.msg[2] = 0x02;
-    return msg;
-}
+#include <stdint.h>
+#include <SPI.h>
 
 dac_utils::Message AD5791::ReadDac_Msg(void) {
 
@@ -35,26 +24,10 @@ dac_utils::Message AD5791::threeNullBytes_Msg(void) {
     return msg;
 }
 
-dac_utils::Message AD5791::SetVoltage_Msg(uint8_t channel, double voltage) {
-
-    uint32_t decimal;
-    dac_utils::Message msg;
-    msg.block_size = 3;
-    msg.n_blocks = 1;
-
-    // The conversion below is for two's complement
-    if (voltage < 0) {
-        decimal = voltage*524288/dac_utils::DAC_FULL_SCALE + 1048576;
-    }
-    else {
-        decimal = voltage*524287/dac_utils::DAC_FULL_SCALE;
-    }
-
-    // Check datasheet for details
-    msg.msg[0] = (byte)((decimal >> 0x10) | 0x10);  // Writes to dac register
-    msg.msg[1] = ((byte)((decimal >> 0x8) & 0xFF));  // Writes first byte
-    msg.msg[2] = ((byte)(decimal & 0xFF));  // Writes second byte
-    return msg;
+void AD5791::UpdateAnalogOutputs(void) {
+    digitalWrite(LDAC, LOW);
+    digitalWrite(LDAC, HIGH);
+    Serial.println("Analog outputs updated!");
 }
 
 double AD5791::BytesToVoltage(dac_utils::Message message) {
@@ -64,116 +37,143 @@ double AD5791::BytesToVoltage(dac_utils::Message message) {
     byte byte3 = message.msg[2];
 
     // The conversion below is for two's complement
-    uint32_t decimal = ((uint32_t)(((((byte1 & 0x15) << 0x8) | byte2) << 0x8) | byte3));
+    uint32_t decimal = ((uint32_t)(((((byte1 & 15) << 8) | byte2) << 8) | byte3));
     double voltage;
-    if (decimal > 524287) {
-        voltage = -(1048576-decimal)*dac_utils::DAC_FULL_SCALE/524288;
+    if (decimal <= 524287) {
+        voltage = decimal * dac_utils::DAC_FULL_SCALE / 524287;
     }
     else {
-        voltage = decimal*dac_utils::DAC_FULL_SCALE/524287;
+        voltage = -(1048576 - decimal) * dac_utils::DAC_FULL_SCALE / 524288;
     }
+    Serial.println("BytesToVoltage is ");
+    Serial.println(voltage);
     return voltage;
 }
 
-void AD5791::UpdateAnalogOutputs(void) {
-    digitalWrite(ldac_pin, LOW);
-    digitalWrite(ldac_pin, HIGH);
+dac_utils::Message AD5791::SetVoltage_Msg(double voltage) {
+
+    uint32_t decimal;
+    dac_utils::Message msg;
+
+    // The conversion below is for two's complement
+    if (voltage < 0) {
+        decimal = voltage * 524288 / dac_utils::DAC_FULL_SCALE + 1048576;
+    }
+    else {
+        decimal = voltage * 524287 / dac_utils::DAC_FULL_SCALE;
+    }
+
+    // Check datasheet for details
+    msg.msg[0] = (byte)((decimal >> 16) | 16);  // Writes to dac register
+    Serial.println("msg.msg[0]");
+    Serial.println(msg.msg[0]);
+    msg.msg[1] = (byte)((decimal >> 8) & 255);  // Writes first byte
+    Serial.println("msg.msg[1]");
+    Serial.println(msg.msg[1]);
+    msg.msg[2] = (byte)(decimal & 255);  // Writes second byte
+    Serial.println("msg.msg[2]");
+    Serial.println(msg.msg[2]);
+    return msg;
 }
 
-uint8_t AD5791::intToThreeBytes(int decimal, byte *DB1, byte *DB2, byte *DB3) {
+double AD5791::SetVoltage(uint8_t channel, double voltage, bool update_outputs) {
 
-    *DB1 = (byte) ((decimal >> 16) | 16);
-    *DB2 = (byte) ((decimal >> 8) & 255);
-    *DB3 = (byte) (decimal & 255);
+    SPI.beginTransaction(dacSettings);
+
+    dac_utils::Message msg = SetVoltage_Msg(voltage);
+    msg.block_size = 3;
+    msg.n_blocks = 1;
+
+
+
+    if (voltage < -1 * dac_utils::DAC_FULL_SCALE || voltage > dac_utils::DAC_FULL_SCALE) {
+        return 999;
+    }
+
+    else {
+
+        for (uint8_t block = 0; block < msg.n_blocks; block++) {
+
+            digitalWrite(dac_sync_pins[channel], LOW);
+            Serial.println("dac sync pin is ");
+            Serial.println(dac_sync_pins[channel]);
+
+            for (uint8_t db = 0; db < msg.block_size; db++) {
+
+                Serial.println("DATA");
+                SPI.transfer(msg.msg[block * msg.block_size + db]);
+                Serial.println(msg.msg[block * msg.block_size + db]);
+            }
+
+            digitalWrite(dac_sync_pins[channel], HIGH);
+        }
+
+        //UpdateAnalogOutputs();
+
+        UpdateAnalogOutputs();
+
+        // Updated voltage may be different than voltage parameter because of
+        // resolution
+        Serial.println("Data sent!");
+        return BytesToVoltage(msg);  // Analog output updated     
+    }
 }
 
-AD5791::AD5791(uint8_t sync_pins[n_channels], uint8_t ldac_pin, uint8_t  spi_mode, BitOrder bit_order) {
+uint8_t AD5791::intToThreeBytes(int decimal, byte* DB1, byte* DB2, byte* DB3) {
 
-    dac_utils::LDAC = ldac_pin;
+    *DB1 = (byte)((decimal >> 16) | 16);
+    *DB2 = (byte)((decimal >> 8) & 255);
+    *DB3 = (byte)(decimal & 255);
+}
+
+AD5791::AD5791(uint8_t sync_pins[n_channels], uint8_t ldac_pin) {
+
+    LDAC = ldac_pin;
 
     for (int i = 0; i < n_channels; ++i) {
         dac_sync_pins[i] = sync_pins[i];
     }
+}
 
-    while (spi_mode) {
+dac_utils::Message AD5791::Initialize_Msg(void) {
 
-        if (spi_mode == 0) {
-            if (bit_order == "MSBFIRST") {
-                SPISettings dacSettings(1000000, MSBFIRST, SPI_MODE0);
-            }
-            else if (bit_order == "LSBFIRST") {
-                SPISettings dacSettings(1000000, LSBFIRST, SPI_MODE0);
-            }
-            else {
-                Serial.println("INVALID BIT ORDER");
-            }
-        }
-
-        if (spi_mode == 1) {
-            if (bit_order == "MSBFIRST") {
-                SPISettings dacSettings(1000000, MSBFIRST, SPI_MODE1);
-            }
-            else if (bit_order == "LSBFIRST") {
-                SPISettings dacSettings(1000000, LSBFIRST, SPI_MODE1);
-            }
-            else {
-                Serial.println("INVALID BIT ORDER");
-            }
-        }
-
-        if (spi_mode == 2) {
-            if (bit_order == "MSBFIRST") {
-                SPISettings dacSettings(1000000, MSBFIRST, SPI_MODE2);
-            }
-            else if (bit_order == "LSBFIRST") {
-                SPISettings dacSettings(1000000, LSBFIRST, SPI_MODE2);
-            }
-            else {
-                Serial.println("INVALID BIT ORDER");
-            }
-        }
-
-        if (spi_mode == 3) {
-            if (bit_order == "MSBFIRST") {
-                SPISettings dacSettings(1000000, MSBFIRST, SPI_MODE3);
-            }
-            else if (bit_order == "LSBFIRST") {
-                SPISettings dacSettings(1000000, LSBFIRST, SPI_MODE3);
-            }
-            else {
-                Serial.println("INVALID BIT ORDER");
-            }
-        }
-        else {
-            Serial.println("INVALID SPI MODE");
-        }
-    }
-
+    dac_utils::Message msg;
+    msg.msg[0] = 0x20;
+    msg.msg[1] = 0x00;
+    msg.msg[2] = 0x02;
+    return msg;
 }
 
 uint8_t AD5791::Initialize(void) {
 
     SPI.beginTransaction(dacSettings);
-
-    dac_utils::Message msg;
-    msg = Initialize_Msg();
+    dac_utils::Message msg = Initialize_Msg();
+    msg.block_size = 3;
+    msg.n_blocks = 1;
 
     for (uint8_t dacPin = 0; dacPin < n_channels; dacPin++) {
 
+        Serial.println("NORMAL MODE1");
+
         for (uint8_t block = 0; block < msg.n_blocks; block++) {
+
+            Serial.println("NORMAL MODE2");
 
             digitalWrite(dac_sync_pins[dacPin], LOW);
 
             for (uint8_t db = 0; db < msg.block_size; db++) {
 
+                Serial.println("NORMAL MODE3");
                 SPI.transfer(msg.msg[block * msg.block_size + db]);
+                Serial.println(msg.msg[block * msg.block_size + db]);
+
             }
 
             digitalWrite(dac_sync_pins[dacPin], HIGH);
-
         }
 
     }
+    Serial.println("-----------");
     return 0;
 }
 
@@ -190,95 +190,59 @@ uint8_t AD5791::Begin(void) {
     }
 
     // Setting LDAC mode
-    pinMode(ldac_pin, OUTPUT);
+    pinMode(LDAC, OUTPUT);
 
     // Setting LDAC value
-    digitalWrite(ldac_pin, HIGH);
+    digitalWrite(LDAC, HIGH);
 
     // Initializing and configuring SPI
     SPI.begin();
+    Serial.println("Begin done!");
 }
 
-double AD5791::SetVoltage(uint8_t channel, double voltage, bool update_outputs) {
-
-    dac_utils::Message msg;
-    msg = SetVoltage_Msg(channel, voltage);
-
-    SPI.beginTransaction(dacSettings);
-
-    if (voltage < -1*dac_utils::DAC_FULL_SCALE || voltage > dac_utils::DAC_FULL_SCALE) {
-        return 999;
-    }
-
-    else {
-
-        for (uint8_t block = 0; block < msg.n_blocks; block++) {
-
-        digitalWrite(channel, LOW);
-
-        for (uint8_t db = 0; db < msg.block_size; db++) {
-
-            SPI.transfer(msg.msg[block * msg.block_size + db]);
-        }
-
-        digitalWrite(channel, HIGH);
-        }
-
-      if (update_outputs) {
-
-        UpdateAnalogOutputs();  // Analog output updated
-
-      }
-
-      // Updated voltage may be different than voltage parameter because of
-      // resolution
-      return BytesToVoltage(msg);
-    }
-}
 
 uint8_t AD5791::readDAC(uint8_t channel) {
-    dac_utils::Message msg;
-    msg = ReadDac_Msg();
+    dac_utils::Message msg = ReadDac_Msg();
 
     for (uint8_t block = 0; block < msg.n_blocks; block++) {
 
-        digitalWrite(channel, LOW);
+        digitalWrite(dac_sync_pins[channel], LOW);
 
         for (uint8_t db = 0; db < msg.block_size; db++) {
 
             SPI.transfer(msg.msg[block * msg.block_size + db]);
         }
 
-        digitalWrite(channel, HIGH);
+        digitalWrite(dac_sync_pins[channel], HIGH);
 
     }
 
     delayMicroseconds(1);
 
     uint8_t data[3];
-    dac_utils::Message msg2;
-    msg = threeNullBytes_Msg();
+    dac_utils::Message msg2 = threeNullBytes_Msg();
 
     for (uint8_t block = 0; block < msg2.n_blocks; block++) {
 
-        digitalWrite(channel, LOW);
+        digitalWrite(dac_sync_pins[channel], LOW);
 
         for (uint8_t db = 0; db < msg2.block_size; db++) {
 
             data[db] = SPI.transfer(msg2.msg[block * msg2.block_size + db]);
         }
 
-        digitalWrite(channel, HIGH);
+        digitalWrite(dac_sync_pins[channel], HIGH);
 
     }
 
     uint8_t voltage = threeByteToVoltage(data[0], data[1], data[2]);
-    Serial.println(voltage,5);
+    return(voltage);
+    Serial.println(voltage, 5);
 
 }
 
 uint8_t AD5791::threeByteToInt(uint8_t DB1, uint8_t DB2, uint8_t DB3) {
-    return ((int)(((((DB1&15)<<8)| DB2)<<8)|DB3));
+    return ((int)(((((DB1 & 15) << 8) | DB2) << 8) | DB3));
 }
 
 uint8_t AD5791::threeByteToVoltage(uint8_t DB1, uint8_t DB2, uint8_t DB3) {
@@ -286,16 +250,15 @@ uint8_t AD5791::threeByteToVoltage(uint8_t DB1, uint8_t DB2, uint8_t DB3) {
     int decimal;
     uint8_t voltage;
 
-    decimal = threeByteToInt(DB1,DB2,DB3);
+    decimal = threeByteToInt(DB1, DB2, DB3);
 
     if (decimal <= 524287) {
-        voltage = decimal*dac_utils::DAC_FULL_SCALE/524287;
+        voltage = decimal * dac_utils::DAC_FULL_SCALE / 524287;
     }
     else {
-        voltage = -(1048576-decimal)*dac_utils::DAC_FULL_SCALE/524288;
-      }
+        voltage = -(1048576 - decimal) * dac_utils::DAC_FULL_SCALE / 524288;
+    }
     return voltage;
 }
-
 
 

@@ -1,18 +1,18 @@
 #ifndef AD5791_H
 #define AD5791_H
+#include <stdint.h>
+#include <SPI.h>
+#include "utils.h"
+using namespace std;
+
 
 typedef unsigned char byte;
 
 namespace dac_utils
 {
     static const uint8_t n_channels = 4;
-    inline uint8_t dac_sync_pins[n_channels];
-    inline int LDAC;
-    inline int const DAC_FULL_SCALE = 10;
-    inline int const DACSCOUNT = 4; //Define!
-    inline int dac[DACSCOUNT] = {12, 13, 14, 15}; //Define!
-    inline float GE[DACSCOUNT] = {1, 1, 1, 1}; // Offset error
-    inline float OS[DACSCOUNT] = {0, 0, 0, 0}; // Gain error
+    int const DAC_FULL_SCALE = 10;
+    int const DACSCOUNT = 4; //Define!
 
     struct Message {
         ///
@@ -38,16 +38,16 @@ namespace dac_utils
         /// a sync_pin_ to HIGH. (block_size*n_blocks <= kdata_len_)
         ///
         uint8_t n_blocks;
-      };
+    };
 }
 
 
-class AD5791 : public QMainWindow
+class AD5791
 {
 protected:
 
     virtual dac_utils::Message Initialize_Msg(void);
-    virtual dac_utils::Message SetVoltage_Msg(uint8_t channel, double voltage);
+    virtual dac_utils::Message SetVoltage_Msg(double voltage);
     virtual dac_utils::Message ReadDac_Msg(void);
     virtual dac_utils::Message threeNullBytes_Msg(void);
     virtual double BytesToVoltage(dac_utils::Message message);
@@ -62,9 +62,7 @@ private:
 
 public:
     AD5791(void) = default;
-
-    SPISettings dacSettings(1000000, MSBFIRST, SPI_MODE1);
-
+    SPISettings dacSettings = SPISettings(1000000, MSBFIRST, SPI_MODE1);
     String name = "DACNAMEHERE";
     ///
     ///
@@ -81,11 +79,14 @@ public:
     /// \returns 0 if successful.
     ///
     uint8_t Initialize(void);
-
-    uint8_t intToThreeBytes(int decimal, byte *DB1, byte *DB2, byte *DB3);
-    uint8_t threeByteToInt(byte DB1,byte DB2, byte DB3);
+    int LDAC;
+    int dac[dac_utils::DACSCOUNT] = { 12, 13, 14, 15 }; //Define!
+    float GE[dac_utils::DACSCOUNT] = { 1, 1, 1, 1 }; // Offset error
+    float OS[dac_utils::DACSCOUNT] = { 0, 0, 0, 0 }; // Gain error
+    uint8_t intToThreeBytes(int decimal, byte* DB1, byte* DB2, byte* DB3);
+    uint8_t threeByteToInt(byte DB1, byte DB2, byte DB3);
     uint8_t threeByteToVoltage(uint8_t DB1, uint8_t DB2, uint8_t DB3);
-    uint8_t voltageToDecimal(float voltage, byte *DB1, byte *DB2, byte *DB3);
+    uint8_t voltageToDecimal(float voltage, byte* DB1, byte* DB2, byte* DB3);
     double SetVoltage(uint8_t channel, double voltage, bool update_outputs);
     uint8_t readDAC(uint8_t channel);
 
@@ -108,7 +109,7 @@ public:
     ///   - SPI_MODE2
     ///   - SPI_MODE3
     ///
-    AD5791(uint8_t sync_pins[n_channels], uint8_t ldac_pin, uint8_t  spi_mode, BitOrder bit_order);
+    AD5791(uint8_t sync_pins[n_channels], uint8_t ldac_pin);
     ///
     ///
     /// Updates the outputs of all Dac objects sharing the same ldac_pin_.
@@ -119,3 +120,4 @@ public:
 
 };
 #endif // AD5791_H
+

@@ -1,7 +1,11 @@
 #ifndef UTILS_H
 #define UTILS_H
+#include <SPI.h>
+#include <stdint.h>
+#include <WString.h>
+using namespace std;
 
-#include <QMainWindow>
+typedef unsigned char byte;
 
 
 namespace interface_utils {
@@ -11,7 +15,7 @@ namespace interface_utils {
     /// Example: if Serial message "SET, 1: 4.2"
     /// cmd[] will be {SET, 1, 4.2} and returns 3
     ///
-    inline uint8_t query_serial(String cmd[]) {
+    static uint8_t query_serial(String cmd[]) {
 
         char received;
 
@@ -21,7 +25,7 @@ namespace interface_utils {
 
         while (received != '\r') {
 
-            if(Serial.available()) {
+            if (Serial.available()) {
 
                 received = Serial.read();
 
@@ -42,8 +46,9 @@ namespace interface_utils {
                 }
             }
         }
-            return cmd_size;
+        return cmd_size;
     }
 }
 
 #endif // UTILS_H
+
