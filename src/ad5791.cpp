@@ -1,12 +1,10 @@
 #include "../include/ad5791.h"
-
 #include <stdint.h>
 #include <SPI.h>
 
 void AD5791::UpdateAnalogOutputs(void) {
     digitalWrite(LDAC, LOW);
     digitalWrite(LDAC, HIGH);
-    Serial.println("Analog outputs updated!");
 }
 
 double AD5791::BytesToVoltage(dac_utils::Message message) {
@@ -24,8 +22,6 @@ double AD5791::BytesToVoltage(dac_utils::Message message) {
     else {
         voltage = -(1048576 - decimal) * dac_utils::DAC_FULL_SCALE / 524288;
     }
-    Serial.println("BytesToVoltage is ");
-    Serial.println(voltage);
     return voltage;
 }
 
@@ -44,14 +40,8 @@ dac_utils::Message AD5791::SetVoltage_Msg(double voltage) {
 
     // Check datasheet for details
     msg.msg[0] = (byte)((decimal >> 16) | 16);  // Writes to dac register
-    Serial.println("msg.msg[0]");
-    Serial.println(msg.msg[0]);
     msg.msg[1] = (byte)((decimal >> 8) & 255);  // Writes first byte
-    Serial.println("msg.msg[1]");
-    Serial.println(msg.msg[1]);
     msg.msg[2] = (byte)(decimal & 255);  // Writes second byte
-    Serial.println("msg.msg[2]");
-    Serial.println(msg.msg[2]);
     return msg;
 }
 
@@ -73,28 +63,19 @@ double AD5791::SetVoltage(uint8_t channel, double voltage, bool update_outputs) 
     else {
 
         for (uint8_t block = 0; block < msg.n_blocks; block++) {
-
             digitalWrite(dac_sync_pins[channel], LOW);
-            Serial.println("dac sync pin is ");
-            Serial.println(dac_sync_pins[channel]);
-
+            
             for (uint8_t db = 0; db < msg.block_size; db++) {
-
-                Serial.println("DATA");
                 SPI.transfer(msg.msg[block * msg.block_size + db]);
-                Serial.println(msg.msg[block * msg.block_size + db]);
             }
-
             digitalWrite(dac_sync_pins[channel], HIGH);
         }
-
-        //UpdateAnalogOutputs();
 
         UpdateAnalogOutputs();
 
         // Updated voltage may be different than voltage parameter because of
         // resolution
-        return BytesToVoltage(msg);  // Analog output updated     
+        return BytesToVoltage(msg);    
     }
 }
 
@@ -132,27 +113,17 @@ uint8_t AD5791::Initialize(void) {
 
     for (uint8_t dacPin = 0; dacPin < n_channels; dacPin++) {
 
-        Serial.println("NORMAL MODE1");
-
         for (uint8_t block = 0; block < msg.n_blocks; block++) {
-
-            Serial.println("NORMAL MODE2");
-
             digitalWrite(dac_sync_pins[dacPin], LOW);
 
             for (uint8_t db = 0; db < msg.block_size; db++) {
-
-                Serial.println("NORMAL MODE3");
                 SPI.transfer(msg.msg[block * msg.block_size + db]);
-                Serial.println(msg.msg[block * msg.block_size + db]);
 
             }
-
             digitalWrite(dac_sync_pins[dacPin], HIGH);
         }
 
     }
-    Serial.println("-----------");
     return 0;
 }
 
@@ -176,7 +147,6 @@ uint8_t AD5791::Begin(void) {
 
     // Initializing and configuring SPI
     SPI.begin();
-    Serial.println("Begin done!");
 }
 
 dac_utils::Message AD5791::threeNullBytes_Msg(void) {
@@ -225,23 +195,16 @@ double AD5791::readDAC(uint8_t channel) {
     msg2.n_blocks = 1;
 
     for (uint8_t block = 0; block < msg2.n_blocks; block++) {
-
         digitalWrite(dac_sync_pins[channel], LOW);
 
         for (uint8_t db = 0; db < msg2.block_size; db++) {
-
-            data[db] = SPI.transfer(msg2.msg[block * msg2.block_size + db]);
-            Serial.println("data received");
-            Serial.println(data[db]);       
+            data[db] = SPI.transfer(msg2.msg[block * msg2.block_size + db]);       
         }
-
         digitalWrite(dac_sync_pins[channel], HIGH);
 
     }
 
     double voltage = threeByteToVoltage(data[0], data[1], data[2]);
-    Serial.println("Voltage read is ");
-    Serial.println(voltage);
     return(voltage);
 
 }
