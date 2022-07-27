@@ -33,18 +33,18 @@ uint8_t Router(String cmd[], uint8_t cmd_size) {
   else if (command == "DACWRITE") { //DONE! -- need test
     voltage = dac.SetVoltage(cmd[1].toInt(), cmd[2].toFloat(), true);
     
-    Serial.print("DAC# ");
+    Serial.print("DAC #");
     Serial.println(cmd[1].toInt());
-    Serial.println(" UPDATED TO ");
-    Serial.println(voltage, 5);
+    Serial.print("UPDATED TO ");
+    Serial.print(voltage, 5);
     Serial.println("V");
   }
   else if (command == "GETDAC") { //DONE! -- need test
     voltage = dac.readDAC(cmd[1].toInt());
     Serial.print("DAC #");
     Serial.println(cmd[1].toInt());
-    Serial.print(" LAST UPDATED TO ");
-    Serial.println(voltage, 5);
+    Serial.print("LAST UPDATED TO ");
+    Serial.print(voltage, 5);
     Serial.println("V");
   }
   // else if (command == "GETADC") {
