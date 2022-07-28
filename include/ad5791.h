@@ -10,9 +10,7 @@ typedef unsigned char byte;
 
 namespace dac_utils
 {
-    static const uint8_t n_channels = 4;
     float const DAC_FULL_SCALE = 10.0;
-    int const DACSCOUNT = 4 ; //Define!
 
     struct Message {
         ///
@@ -80,9 +78,9 @@ public:
     ///
     uint8_t Initialize(void);
     int LDAC;
-    int dac[dac_utils::DACSCOUNT] = {12, 13, 14, 15}; //Define!
-    float GE[dac_utils::DACSCOUNT] = {1, 1, 1, 1}; // Offset error
-    float OS[dac_utils::DACSCOUNT] = {0, 0, 0, 0}; // Gain error
+    int dac[n_channels] = {12, 13, 14, 15}; //Define!
+    float GE[n_channels] = {1, 1, 1, 1}; // Offset error
+    float OS[n_channels] = {0, 0, 0, 0}; // Gain error
     uint8_t intToThreeBytes(int decimal, byte *DB1, byte *DB2, byte *DB3);
     uint32_t threeByteToInt(byte DB1,byte DB2, byte DB3);
     double threeByteToVoltage(uint8_t DB1, uint8_t DB2, uint8_t DB3);
@@ -115,8 +113,6 @@ public:
     /// Updates the outputs of all Dac objects sharing the same ldac_pin_.
     ///
     void UpdateAnalogOutputs(void);
-
-
 
 };
 #endif // AD5791_H
