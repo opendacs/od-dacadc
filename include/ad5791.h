@@ -1,62 +1,30 @@
 #ifndef AD5791_H
 #define AD5791_H
-#include <stdint.h>
 #include <SPI.h>
+#include <stdint.h>
 #include "utils.h"
 using namespace std;
 
 
 typedef unsigned char byte;
 
-namespace dac_utils
-{
-    float const DAC_FULL_SCALE = 10.0;
-
-    struct Message {
-        ///
-        /// Size of msg. (block_size*n_blocks <= kdata_len_)
-        ///
-        static const uint8_t kdata_len_ = 10;
-        ///
-        ///
-        /// Message to be sent via SPI. Each element represents a byte. This message is
-        /// separated could be divided in blocks.
-        ///
-        byte msg[kdata_len_];
-        ///
-        ///
-        /// The size in bytes of the registers to be written.
-        /// It can be also be thought of as the number of bytes to be sent before setting
-        /// the sync_pin_ to HIGH. (block_size*n_blocks <= kdata_len_)
-        ///
-        uint8_t block_size;
-        ///
-        ///
-        /// The number of blocks. Each block starts with a sync_pin_ to LOW and ends with
-        /// a sync_pin_ to HIGH. (block_size*n_blocks <= kdata_len_)
-        ///
-        uint8_t n_blocks;
-      };
-}
-
-
 class AD5791
 {
 protected:
 
-    virtual dac_utils::Message Initialize_Msg(void);
-    virtual dac_utils::Message SetVoltage_Msg(double voltage);
-    virtual dac_utils::Message ReadDac_Msg(void);
-    virtual dac_utils::Message threeNullBytes_Msg(void);
-    virtual double BytesToVoltage(dac_utils::Message message);
+    virtual spi_utils::Message Initialize_Msg(void);
+    virtual spi_utils::Message SetVoltage_Msg(double voltage);
+    virtual spi_utils::Message ReadDac_Msg(void);
+    virtual spi_utils::Message threeNullBytes_Msg(void);
+    virtual double BytesToVoltage(spi_utils::Message message);
 
 private:
 
     static const uint8_t n_channels = 4;
+    float const DAC_FULL_SCALE = 10.0;
     uint8_t dac_sync_pins[n_channels];
     // sync_pin identifies the dac chip; each chip has a unique sync_pin.
     uint8_t ldac_pin, spi_mode;
-    BitOrder bit_order;
 
 public:
     AD5791(void) = default;

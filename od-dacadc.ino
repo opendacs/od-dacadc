@@ -59,9 +59,6 @@ void loop() {
       
       cmd_size = interface_utils::query_serial(cmd);
       
-      for (int i = 0; i < cmd_size; i++) {
-          Serial.println(cmd[i]);
-      }
       Router(cmd, cmd_size);
    }
 }

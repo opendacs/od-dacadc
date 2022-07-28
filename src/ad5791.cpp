@@ -7,7 +7,7 @@ void AD5791::UpdateAnalogOutputs(void) {
     digitalWrite(LDAC, HIGH);
 }
 
-double AD5791::BytesToVoltage(dac_utils::Message message) {
+double AD5791::BytesToVoltage(spi_utils::Message message) {
 
     byte byte1 = message.msg[0];
     byte byte2 = message.msg[1];
@@ -17,25 +17,25 @@ double AD5791::BytesToVoltage(dac_utils::Message message) {
     uint32_t decimal = threeByteToInt(byte1, byte2, byte3);
     double voltage;
     if (decimal <= 524287) {
-        voltage = decimal * dac_utils::DAC_FULL_SCALE / 524287;
+        voltage = decimal * DAC_FULL_SCALE / 524287;
     }
     else {
-        voltage = -(1048576 - decimal) * dac_utils::DAC_FULL_SCALE / 524288;
+        voltage = -(1048576 - decimal) * DAC_FULL_SCALE / 524288;
     }
     return voltage;
 }
 
-dac_utils::Message AD5791::SetVoltage_Msg(double voltage) {
+spi_utils::Message AD5791::SetVoltage_Msg(double voltage) {
 
     uint32_t decimal;
-    dac_utils::Message msg;
+    spi_utils::Message msg;
 
     // The conversion below is for two's complement
     if (voltage < 0) {
-        decimal = voltage * 524288 / dac_utils::DAC_FULL_SCALE + 1048576;
+        decimal = voltage * 524288 / DAC_FULL_SCALE + 1048576;
     }
     else {
-        decimal = voltage * 524287 / dac_utils::DAC_FULL_SCALE;
+        decimal = voltage * 524287 / DAC_FULL_SCALE;
     }
 
     // Check datasheet for details
@@ -49,13 +49,13 @@ double AD5791::SetVoltage(uint8_t channel, double voltage, bool update_outputs) 
 
     SPI.beginTransaction(dacSettings);
 
-    dac_utils::Message msg = SetVoltage_Msg(voltage);
+    spi_utils::Message msg = SetVoltage_Msg(voltage);
     msg.block_size = 3;
     msg.n_blocks = 1;
 
 
 
-    if (voltage < -1 * dac_utils::DAC_FULL_SCALE || voltage > dac_utils::DAC_FULL_SCALE) {
+    if (voltage < -1 * DAC_FULL_SCALE || voltage > DAC_FULL_SCALE) {
         Serial.println("VOLTAGE OVERRANGE");
         return 999;
     }
@@ -95,9 +95,9 @@ AD5791::AD5791(uint8_t sync_pins[n_channels], uint8_t ldac_pin) {
     }
 }
 
-dac_utils::Message AD5791::Initialize_Msg(void) {
+spi_utils::Message AD5791::Initialize_Msg(void) {
 
-    dac_utils::Message msg;
+    spi_utils::Message msg;
     msg.msg[0] = 0x20;
     msg.msg[1] = 0x00;
     msg.msg[2] = 0x02;
@@ -107,7 +107,7 @@ dac_utils::Message AD5791::Initialize_Msg(void) {
 uint8_t AD5791::Initialize(void) {
 
     SPI.beginTransaction(dacSettings);
-    dac_utils::Message msg = Initialize_Msg();
+    spi_utils::Message msg = Initialize_Msg();
     msg.block_size = 3;
     msg.n_blocks = 1;
 
@@ -149,9 +149,9 @@ uint8_t AD5791::Begin(void) {
     SPI.begin();
 }
 
-dac_utils::Message AD5791::threeNullBytes_Msg(void) {
+spi_utils::Message AD5791::threeNullBytes_Msg(void) {
 
-    dac_utils::Message msg2;
+    spi_utils::Message msg2;
 
     msg2.msg[0] = 0x00; //Command byte
     msg2.msg[1] = 0x00;
@@ -159,9 +159,9 @@ dac_utils::Message AD5791::threeNullBytes_Msg(void) {
     return msg2;
 }
 
-dac_utils::Message AD5791::ReadDac_Msg(void) {
+spi_utils::Message AD5791::ReadDac_Msg(void) {
 
-    dac_utils::Message msg;
+    spi_utils::Message msg;
 
     msg.msg[0] = 0x90; //Command byte
     msg.msg[1] = 0x00;
@@ -170,7 +170,7 @@ dac_utils::Message AD5791::ReadDac_Msg(void) {
 }
 
 double AD5791::readDAC(uint8_t channel) {
-    dac_utils::Message msg = ReadDac_Msg();
+    spi_utils::Message msg = ReadDac_Msg();
     msg.block_size = 3;
     msg.n_blocks = 1;
 
@@ -190,7 +190,7 @@ double AD5791::readDAC(uint8_t channel) {
     delayMicroseconds(1);
 
     uint8_t data[3];
-    dac_utils::Message msg2 = threeNullBytes_Msg();
+    spi_utils::Message msg2 = threeNullBytes_Msg();
     msg2.block_size = 3;
     msg2.n_blocks = 1;
 
@@ -219,10 +219,10 @@ double AD5791::threeByteToVoltage(uint8_t DB1, uint8_t DB2, uint8_t DB3) {
     uint32_t decimal = threeByteToInt(DB1, DB2, DB3);
 
     if (decimal <= 524287) {
-        voltage = decimal * dac_utils::DAC_FULL_SCALE / 524287;
+        voltage = decimal * DAC_FULL_SCALE / 524287;
     }
     else {
-        voltage = -(1048576 - decimal) * dac_utils::DAC_FULL_SCALE / 524288;
+        voltage = -(1048576 - decimal) * DAC_FULL_SCALE / 524288;
     }
     return voltage;
 }
