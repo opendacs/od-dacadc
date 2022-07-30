@@ -9,11 +9,32 @@ typedef unsigned char byte;
 
 namespace spi_utils
 {
+    uint8_t data_transfer(uint8_t data[3], uint8_t block_size, uint8_t n_blocks, uint8_t sync_pin) {
+        
+        spi_utils::Message msg = data;
+
+        msg.block_size = block_size;
+        msg.n_blocks = n_blocks;
+
+        for (uint8_t block = 0; block < msg.n_blocks; block++) {
+
+            digitalWrite(sync_pin, LOW);
+
+            for (uint8_t db = 0; db < msg.block_size; db++) {
+
+                SPI.transfer(msg.msg[block * msg.block_size + db]);
+            }
+            digitalWrite(sync_pin, HIGH);
+        }
+
+        return 0;
+    }
+
     struct Message {
         ///
         /// Size of msg. (block_size*n_blocks <= kdata_len_)
         ///
-        static const uint8_t kdata_len_ = 10;
+        static const uint8_t kdata_len_ = 48;
         ///
         ///
         /// Message to be sent via SPI. Each element represents a byte. This message is

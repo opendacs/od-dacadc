@@ -184,7 +184,6 @@ double AD5791::readDAC(uint8_t channel) {
         }
 
         digitalWrite(dac_sync_pins[channel], HIGH);
-
     }
 
     delayMicroseconds(1);
