@@ -6,20 +6,18 @@
 using namespace std;
 
 AD4115::AD4115(uint8_t sync_pin, uint8_t drdy_pin) {
-
-}
-
-
-uint8_t AD4115::reset_adc(void) {
-
-	adc_sync = 32;
-	drdy = 28;
+	adc_sync = sync_pin;
+	drdy = drdy_pin;
 
 	pinMode(32, OUTPUT);
 	pinMode(28, INPUT);
 	pinMode(50, OUTPUT);
 	digitalWrite(50, HIGH);
 	digitalWrite(adc_sync, HIGH);
+}
+
+uint8_t AD4115::reset_adc(void) {
+	
 	SPI.beginTransaction(adcSettings);
   	
   	for (int i = 0; i < 8; i++) {
@@ -44,27 +42,15 @@ spi_utils::Message AD4115::disable_all_channels_Msg(void) {
 	for (int chl = 0; chl < 16; chl++) {
 		uint8_t count = chl;
 		spi_utils::Message msg = config_channel_Msg(chl, 0, 0, 0, 1);
-    	
-    	// Serial.print("count ");
-    	// Serial.println(count);
-    	// Serial.println(msg.msg[0]);
-    	// Serial.println(msg.msg[1]);
-    	// Serial.println(msg.msg[2]);
 
 	    // 4 LSB are Channel address
 	    data.data[3 * chl] = msg.msg[0]; 
-	    // Serial.println(3 * chl);
-	    // Serial.println(msg.msg[3 * chl]);
 	    
 	    // Disable channel 
 	    data.data[(3 * chl) + 1] = msg.msg[1];
-	    // Serial.println((3 * chl) + 1);
-	    // Serial.println(msg.msg[(3 * chl) + 1]);
 	    
 	    //Irrelevant
 	    data.data[(3 * chl) + 2] = msg.msg[2];
-	    // Serial.println((3 * chl) + 2);
-	    // Serial.println(msg.msg[(3 * chl) + 1]);
     }
 
     for (int i = 0; i < 16; i++) {
@@ -128,7 +114,7 @@ spi_utils::Message AD4115::config_channel_Msg(uint8_t channel, uint8_t state, ui
 			//Reserved bits	
 			channel_data = (channel_data << 2);
 
-			if (((abs(input_1 - input_2) == 1) && (((input_1 + input_2) - 1) % 4) == 0) || (input_2 == 16)) {
+			if ((input_2 == 16) || ((abs(input_1 - input_2) == 1) && (((input_1 + input_2) - 1) % 4) == 0)) {
 				
 				if (0 <= input_1 <= 15) {
 					
@@ -205,7 +191,6 @@ uint8_t AD4115::config_channel(uint8_t channel, uint8_t state,  uint8_t setup, u
             Serial.println(db);
             Serial.println(msg.msg[block * msg.block_size + db]);
         }
-        //digitalWrite(adc_sync, HIGH);
     }
     SPI.endTransaction();
 
@@ -486,22 +471,20 @@ double AD4115::full_reading(void) {
 			data_reading();
 
 			channel_decimals[i] = threeByteToInt(data_read[0], data_read[1], data_read[2]);
-    		channel_voltages[i] = voltageMap(channel_decimals[i]);
-
-    		// Serial.print("Channel ");
-    		// Serial.print(i);
-    		// Serial.print(":");
-    		// Serial.print(channel_voltages[i]);
-    		// Serial.println("V");
+    		channel_voltages[i] = voltageMap(channel_decimals[i]); 
 		}
 	}
 
 	digitalWrite(adc_sync, HIGH);
 
 	for (int i = 0; i < 16; i++) {
-		Serial.println(i);
-		Serial.println(channel_voltages[i],6);
-
+		if (channel_states[i] == 1) {
+			Serial.print("Channel ");
+			Serial.print(i);
+			Serial.print(":");
+			Serial.print(channel_voltages[i],6);
+			Serial.println("V");
+		}
 	}
 	return 0;
 }	

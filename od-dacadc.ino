@@ -9,7 +9,7 @@ using namespace std;
 uint8_t channels[4] = {6, 6, 6, 6}; //DACs pins
 AD5791 dac(channels, 4);
 
-AD4115 adc;
+AD4115 adc(32, 28);
 
 void setup() {
   Serial.begin(115200);
