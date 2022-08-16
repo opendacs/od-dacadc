@@ -2,21 +2,24 @@
 #include "include/ad4115.h"
 #include "include/utils.h"
 #include <SPI.h>
+#include <stdint.h>
+
+using namespace std;
 
 uint8_t channels[4] = {6, 6, 6, 6}; //DACs pins
 AD5791 dac(channels, 4);
 
-uint8_t adc_sync = 0; //Define!
-AD4115 adc(adc_sync);
+AD4115 adc;
 
 void setup() {
   Serial.begin(115200);
   dac.Begin(); 
   dac.Initialize();
+  adc.reset_adc();
 }
 
 uint8_t Router(String cmd[], uint8_t cmd_size) {
-
+  
   String command = cmd[0];
   double voltage;
   
@@ -32,7 +35,7 @@ uint8_t Router(String cmd[], uint8_t cmd_size) {
     Serial.println("V");
   }
 
-  else if (command == "GETDAC") {
+  else if (command == "GET_DAC") {
     voltage = dac.readDAC(cmd[1].toInt());
     Serial.print("DAC #");
     Serial.println(cmd[1].toInt());
@@ -43,19 +46,23 @@ uint8_t Router(String cmd[], uint8_t cmd_size) {
 
   //ADC COMMANDS SECTION
   else if (command == "GET_ADC") {
-    voltage = adc.single_reading(cmd[1].toInt());
-    Serial.print("READING ");
-    Serial.print(voltage,7);
-    Serial.print("V");
+    voltage = adc.full_reading();
+    // Serial.print("READING ");
+    // Serial.print(voltage,7);
+    // Serial.print("V");
+  }
+
+  else if (command == "CONFIG_CHANNEL") {
+    voltage = adc.config_channel(cmd[1].toInt(), cmd[2].toInt(), cmd[3].toInt(), cmd[4].toInt(), cmd[5].toInt());
   }
 
   else if (command == "ADC_CONFIG") {
-    uint8_t data = adc.general_config(cmd[1], cmd[2], cmd[3], cmd[4], cmd[5]);
+    uint8_t data = adc.general_config(cmd[1].toInt(), cmd[2].toInt(), cmd[3].toInt(), cmd[4].toInt(), cmd[5].toInt());
     Serial.println(data);
   }
 
   else if (command == "SETUP_CONFIG") {
-    Serial.println("FEATURE UNDER DEVELOPMENT");
+    voltage = adc.setup_config();
   }
 
   else if (command == "DISABLE_ALL_CHANNELS") {

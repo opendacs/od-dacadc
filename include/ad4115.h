@@ -13,15 +13,26 @@ protected:
 	virtual spi_utils::Message config_channel_Msg(uint8_t channel, uint8_t state, uint8_t setup, uint8_t input_1, uint8_t input_2);
 	virtual spi_utils::Message interface_mode_Msg(void);
 	virtual spi_utils::Message adc_mode_Msg(void);
+	virtual spi_utils::Message data_reading_Msg(void);
 
 private:
 	uint32_t twoByteToInt(byte db1, byte db2);
-	uint32_t threeByteToInt(byte db1, byte db2, byte db3);
-	uint8_t single_reading(uint8_t channel);
+	double threeByteToInt(uint8_t db1, uint8_t db2, uint8_t db3);
+	double voltageMap(double decimal);
+	int channel_states[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	double channel_decimals[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	double channel_voltages[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	uint8_t data_read[3];
+	void wait_drdy(void);
+	uint8_t adc_sync;
+	uint8_t drdy;
+	void s_data_reading(void);
 
 public:
+	//Constructor
+	AD4115(uint8_t adc_sync, uint8_t drdy);
 	AD4115(void) = default;
-	SPISettings adcSettings = SPISettings(1000000, MSBFIRST, SPI_MODE3);
+	SPISettings adcSettings = SPISettings(10000000, MSBFIRST, SPI_MODE3);
 	///
 	///
 	///
@@ -39,12 +50,15 @@ public:
 	uint8_t general_config(uint8_t channel, uint8_t state, uint8_t setup, uint8_t input_1, uint8_t input_2);
 	uint8_t read_id(void);
 	uint8_t interface_mode(void);
-	uint8_t adc_mode(void);
+	void adc_mode(void);
+	void data_reading(void);
+	//Returns array of size 16--0 if deactivated, 1 if activated
+	uint8_t update_channel_states(void);
+	//Iterates through array and counts the 1s--returns integer
+	uint8_t active_count(void);
+	double full_reading(void);
+	uint8_t reset_adc(void);
 
-	//Constructor
-	AD4115(uint8_t sync_pin);
-
-	//Numbering system conversions
-}
+};
 
 #endif // AD4115_H
