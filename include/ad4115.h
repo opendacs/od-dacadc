@@ -26,7 +26,6 @@ private:
 	void wait_drdy(void);
 	uint8_t adc_sync;
 	uint8_t drdy;
-	void s_data_reading(void);
 
 public:
 	//Constructor
@@ -55,7 +54,6 @@ public:
 	//Returns array of size 16--0 if deactivated, 1 if activated
 	uint8_t update_channel_states(void);
 	//Iterates through array and counts the 1s--returns integer
-	uint8_t active_count(void);
 	double full_reading(void);
 	uint8_t reset_adc(void);
 

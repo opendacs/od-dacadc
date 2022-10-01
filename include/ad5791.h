@@ -21,7 +21,6 @@ protected:
 private:
 
     static const uint8_t n_channels = 4;
-    float const DAC_FULL_SCALE = 10.0;
     uint8_t ldac_pin, spi_mode;
     
     // dac_sync_pins identifies the dac chip; each chip has a unique sync_pin.
@@ -37,6 +36,7 @@ public:
     AD5791(void) = default;
     SPISettings dacSettings = SPISettings(1000000, MSBFIRST, SPI_MODE1);
     String name = "DACNAMEHERE";
+    float const DAC_FULL_SCALE = 10.0;
     ///
     ///
     ///

@@ -1,5 +1,6 @@
 #include "include/ad5791.h"
 #include "include/ad4115.h"
+//#include "include/ramp.h"
 #include "include/utils.h"
 #include <SPI.h>
 #include <stdint.h>
@@ -69,6 +70,14 @@ uint8_t Router(String cmd[], uint8_t cmd_size) {
     uint8_t data = adc.disable_all_channels();
     Serial.println(data);
   }
+
+  //RAMP FUNCTIONS SECTION
+  // else if (command == "BUFFER_RAMP") {
+  //   for (int i = 0; i < cmd_size; i++){
+  //     ramp_param[i] = cmd[i].toInt();  
+  //   }
+  //   ramp.buffer();
+  // }
 
   //DEBUGGING COMMANDS SECTION
   else if (command == "NOP") {
