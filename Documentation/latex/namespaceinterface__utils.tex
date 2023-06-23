@@ -1,0 +1,33 @@
+\hypertarget{namespaceinterface__utils}{}\doxysection{interface\+\_\+utils Namespace Reference}
+\label{namespaceinterface__utils}\index{interface\_utils@{interface\_utils}}
+
+
+Namespace containing utility functions for serial interface parsing.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+static uint8\+\_\+t \mbox{\hyperlink{namespaceinterface__utils_a621a9a590c5f0d2352aaa9280694364e}{query\+Serial}} (String cmd\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Namespace containing utility functions for serial interface parsing. 
+
+The \mbox{\hyperlink{namespaceinterface__utils}{interface\+\_\+utils}} namespace provides utility functions for parsing and storing values separated by \char`\"{},\char`\"{} or \char`\"{}\+:\char`\"{} from a serial message. The main function in this namespace is {\ttfamily query\+Serial}, which takes a serial message as input and parses it into separate elements stored in the {\ttfamily cmd} array. It returns the number of values parsed.
+
+For example, if the serial message is \char`\"{}\+SET, 1\+: 4.\+2\char`\"{}, the {\ttfamily cmd} array will be \{SET, 1, 4.\+2\}, and the function will return 3.
+
+This namespace is used in the main {\ttfamily loop} function to process incoming serial commands. It extracts the command and its parameters from the serial message and calls the appropriate router function to handle the command.
+
+Overall, the \mbox{\hyperlink{namespaceinterface__utils}{interface\+\_\+utils}} namespace encapsulates utility functions for parsing serial interface messages and extracting individual values for further processing. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespaceinterface__utils_a621a9a590c5f0d2352aaa9280694364e}\label{namespaceinterface__utils_a621a9a590c5f0d2352aaa9280694364e}} 
+\index{interface\_utils@{interface\_utils}!querySerial@{querySerial}}
+\index{querySerial@{querySerial}!interface\_utils@{interface\_utils}}
+\doxysubsubsection{\texorpdfstring{querySerial()}{querySerial()}}
+{\footnotesize\ttfamily static uint8\+\_\+t interface\+\_\+utils\+::query\+Serial (\begin{DoxyParamCaption}\item[{String}]{cmd\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Parses and stores values separated by \char`\"{},\char`\"{} or \char`\"{}\+:\char`\"{} from serial message to cmd\mbox{[}\mbox{]} Returns number of values Example\+: if Serial message \char`\"{}\+SET, 1\+: 4.\+2\char`\"{} cmd\mbox{[}\mbox{]} will be \{SET, 1, 4.\+2\} and returns 3 

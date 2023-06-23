@@ -382,13 +382,8 @@ double AD5791::readDac(uint8_t channel) {
 
             SPI.transfer(msg.msg[block * msg.blockSize + db]);
         }
-
-<<<<<<< Updated upstream
-        digitalWrite(dac_sync_pins[channel], HIGH);
-
-=======
+      
         digitalWrite(dacSyncPins[channel], HIGH);
->>>>>>> Stashed changes
     }
 
     delayMicroseconds(1);

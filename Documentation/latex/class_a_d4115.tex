@@ -1,0 +1,582 @@
+\hypertarget{class_a_d4115}{}\doxysection{AD4115 Class Reference}
+\label{class_a_d4115}\index{AD4115@{AD4115}}
+
+
+{\ttfamily \#include $<$ad4115.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_a_d4115_a0cbc5fe44b8ff771e9109e67ea6051d5}{AD4115}} (uint8\+\_\+t adc\+Sync, uint8\+\_\+t drdy)
+\begin{DoxyCompactList}\small\item\em Constructor for the \mbox{\hyperlink{class_a_d4115}{AD4115}} class. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_a_d4115_a73528ef18d788f401f643af1d5f98afe}{AD4115}} (void)=default
+\item 
+uint8\+\_\+t \mbox{\hyperlink{class_a_d4115_a2e63269deaac8820da1dba3df23f985b}{config\+Channel}} (uint8\+\_\+t channel, uint8\+\_\+t state, uint8\+\_\+t setup, uint8\+\_\+t input\+\_\+1, uint8\+\_\+t input\+\_\+2)
+\begin{DoxyCompactList}\small\item\em Configures a channel of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_a_d4115_ac7e6b8f32ec72d0af6d2b7a41542589e}{disable\+All\+Channels}} (void)
+\begin{DoxyCompactList}\small\item\em Disables all channels of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_a_d4115_a7c1f99a3d9d42900a1c442aa2e20091d}{setup\+Config}} (void)
+\begin{DoxyCompactList}\small\item\em Generates a setup configuration message for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_a_d4115_afd0075d25d6047b3d141c31f1ccb08ff}{general\+Config}} (uint8\+\_\+t channel, uint8\+\_\+t state, uint8\+\_\+t setup, uint8\+\_\+t input\+\_\+1, uint8\+\_\+t input\+\_\+2)
+\begin{DoxyCompactList}\small\item\em Performs the general configuration for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_a_d4115_aec7b9d4670a67767579026f2b122384b}{read\+Id}} (void)
+\begin{DoxyCompactList}\small\item\em Reads the ID register of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_a_d4115_ae3725c1b0523948f42c029593d2be639}{interface\+Mode}} (void)
+\begin{DoxyCompactList}\small\item\em Performs the interface mode configuration for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_d4115_aac4e474edfd743b06ade3ca7844b45a6}{adc\+Mode}} (void)
+\begin{DoxyCompactList}\small\item\em Performs the ADC mode configuration for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_d4115_a6fda2af1ec68c29a51feb23ba44eb0bc}{data\+Reading}} (void)
+\begin{DoxyCompactList}\small\item\em Performs data reading from the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_a_d4115_ace57ff34808034de2101671613807753}{update\+Channel\+States}} (void)
+\begin{DoxyCompactList}\small\item\em Updates the channel states based on the ADC response. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_a_d4115_a9234a47db79f7f1f247280b535ca3982}{full\+Reading}} (void)
+\begin{DoxyCompactList}\small\item\em Performs a full reading from the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_a_d4115_a45ff658cc47cc6246ffcb1b913cec91f}{buffer\+Ramp\+Full\+Reading}} (void)
+\begin{DoxyCompactList}\small\item\em Performs a buffer ramp full reading from the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_a_d4115_abbbe819d13095ebf0dbef2a7701513da}{reset\+Adc}} (void)
+\begin{DoxyCompactList}\small\item\em Resets the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_a_d4115_ad6d2af288b642ed37d4efdc4b9fe7732}{config\+Channels\+Test}} (void)
+\begin{DoxyCompactList}\small\item\em Performs a test to read and print the configuration of the ADC channels. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+SPISettings \mbox{\hyperlink{class_a_d4115_a1dad24da48a236230a173c9b3abf8e00}{adc\+Settings}} = SPISettings(10000000, MSBFIRST, SPI\+\_\+\+MODE3)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} \mbox{\hyperlink{class_a_d4115_ae849067f7d9fc974051e29ac39d55d81}{disable\+All\+Channels\+Msg}} (void)
+\begin{DoxyCompactList}\small\item\em Creates a message to disable all channels of the \mbox{\hyperlink{class_a_d4115}{AD4115}}. Calls \mbox{\hyperlink{class_a_d4115_a91568ff35b1e833c29eae8a9e4b91eb5}{config\+Channel\+Msg()}} \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} \mbox{\hyperlink{class_a_d4115_a8efbace5366afd4ee80011b680886ae3}{setup\+Config\+Msg}} (void)
+\begin{DoxyCompactList}\small\item\em Generates a setup configuration message for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} \mbox{\hyperlink{class_a_d4115_a91568ff35b1e833c29eae8a9e4b91eb5}{config\+Channel\+Msg}} (uint8\+\_\+t channel, uint8\+\_\+t state, uint8\+\_\+t setup, uint8\+\_\+t input\+\_\+1, uint8\+\_\+t input\+\_\+2)
+\begin{DoxyCompactList}\small\item\em Generates a configuration message for a specific channel of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} \mbox{\hyperlink{class_a_d4115_a6469691e5361a1997ed155ccd2260ed8}{interface\+Mode\+Msg}} (void)
+\begin{DoxyCompactList}\small\item\em Generates an interface mode message for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} \mbox{\hyperlink{class_a_d4115_a1e411adef98c6bb434878ffedf2c2fc6}{adc\+Mode\+Msg}} (void)
+\begin{DoxyCompactList}\small\item\em Generates an ADC mode message for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} \mbox{\hyperlink{class_a_d4115_a5742f77de027715e8411915cfb5187b0}{data\+Reading\+Msg}} (void)
+\begin{DoxyCompactList}\small\item\em Generates a data reading message for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{class_a_d4115_a5f7d96456494251f0dd5dbde5d134070}{two\+Byte\+To\+Int}} (\mbox{\hyperlink{ad5791_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}} db1, \mbox{\hyperlink{ad5791_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}} db2)
+\begin{DoxyCompactList}\small\item\em Converts two bytes to a 32-\/bit unsigned integer. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_a_d4115_abdd6a1d6e51ef730162ab42f711ade70}{three\+Byte\+To\+Int}} (uint8\+\_\+t db1, uint8\+\_\+t db2, uint8\+\_\+t db3)
+\begin{DoxyCompactList}\small\item\em Converts three bytes to a double precision integer. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{class_a_d4115_a3a38ddcf07b2523a40e6e45bf2065101}{voltage\+Map}} (double decimal)
+\begin{DoxyCompactList}\small\item\em Maps the decimal value to voltage. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_a_d4115_aa8db977a1819b37f361fce54ecdfdc22}{wait\+Drdy}} (void)
+\begin{DoxyCompactList}\small\item\em Waits for the DRDY (data ready) signal of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{class_a_d4115_a16bc7730f1e74348a929905b6daaa2b1}{\+\_\+channel\+States}} \mbox{[}16\mbox{]} = \{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0\}
+\item 
+double \mbox{\hyperlink{class_a_d4115_a75525dcfd9eb44b5eef256d74c6a75f2}{\+\_\+channel\+Decimals}} \mbox{[}16\mbox{]} = \{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0\}
+\item 
+double \mbox{\hyperlink{class_a_d4115_a8574163e050be49fbdd0ba77b63d2e2e}{\+\_\+channel\+Voltages}} \mbox{[}16\mbox{]} = \{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0\}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{class_a_d4115_ae5738aefbad3e8aee04c831efecc2ae5}{\+\_\+data\+Read}} \mbox{[}3\mbox{]}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{class_a_d4115_a302c5c92e3f552cb3533774548e831dd}{\+\_\+adc\+Sync}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{class_a_d4115_ae3733c13e2d850b3016590b2c87a2a1a}{\+\_\+drdy}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_a_d4115_a0cbc5fe44b8ff771e9109e67ea6051d5}\label{class_a_d4115_a0cbc5fe44b8ff771e9109e67ea6051d5}} 
+\index{AD4115@{AD4115}!AD4115@{AD4115}}
+\index{AD4115@{AD4115}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{AD4115()}{AD4115()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily AD4115\+::\+AD4115 (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{sync\+\_\+pin,  }\item[{uint8\+\_\+t}]{drdy\+\_\+pin }\end{DoxyParamCaption})}
+
+
+
+Constructor for the \mbox{\hyperlink{class_a_d4115}{AD4115}} class. 
+
+Initializes the \mbox{\hyperlink{class_a_d4115}{AD4115}} object with the provided sync and DRDY pins. Sets the necessary pin modes and initial states for proper communication with the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sync\+\_\+pin} & The pin connected to the ADC SYNC pin. \\
+\hline
+{\em drdy\+\_\+pin} & The pin connected to the ADC DRDY (data ready) pin. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_a_d4115_a73528ef18d788f401f643af1d5f98afe}\label{class_a_d4115_a73528ef18d788f401f643af1d5f98afe}} 
+\index{AD4115@{AD4115}!AD4115@{AD4115}}
+\index{AD4115@{AD4115}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{AD4115()}{AD4115()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily AD4115\+::\+AD4115 (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_a_d4115_aac4e474edfd743b06ade3ca7844b45a6}\label{class_a_d4115_aac4e474edfd743b06ade3ca7844b45a6}} 
+\index{AD4115@{AD4115}!adcMode@{adcMode}}
+\index{adcMode@{adcMode}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{adcMode()}{adcMode()}}
+{\footnotesize\ttfamily void AD4115\+::adc\+Mode (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Performs the ADC mode configuration for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function performs the ADC mode configuration for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC by sending the ADC mode message generated by the \mbox{\hyperlink{class_a_d4115_a1e411adef98c6bb434878ffedf2c2fc6}{adc\+Mode\+Msg()}} function via SPI communication. The function sets the block size and number of blocks in the message, begins an SPI transaction, transfers the message data in blocks, and ends the transaction. It uses the \+\_\+adc\+Sync pin to control the synchronization of the ADC mode configuration. The function sets the \+\_\+adc\+Sync pin to LOW before starting the transfer and sets it to LOW again after the transfer. Finally, it ends the SPI transaction. In full\+\_\+reading
+
+\begin{DoxyReturn}{Returns}
+None. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_a1e411adef98c6bb434878ffedf2c2fc6}\label{class_a_d4115_a1e411adef98c6bb434878ffedf2c2fc6}} 
+\index{AD4115@{AD4115}!adcModeMsg@{adcModeMsg}}
+\index{adcModeMsg@{adcModeMsg}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{adcModeMsg()}{adcModeMsg()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} AD4115\+::adc\+Mode\+Msg (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Generates an ADC mode message for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function generates an ADC mode message for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. The message includes specific values for different configuration parameters related to the ADC\textquotesingle{}s mode of operation. The function constructs the message by assigning values to the corresponding elements of the \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} object and returns the resulting message.
+
+\begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} object containing the generated ADC mode message. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_a45ff658cc47cc6246ffcb1b913cec91f}\label{class_a_d4115_a45ff658cc47cc6246ffcb1b913cec91f}} 
+\index{AD4115@{AD4115}!bufferRampFullReading@{bufferRampFullReading}}
+\index{bufferRampFullReading@{bufferRampFullReading}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{bufferRampFullReading()}{bufferRampFullReading()}}
+{\footnotesize\ttfamily double AD4115\+::buffer\+Ramp\+Full\+Reading (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Performs a buffer ramp full reading from the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function performs a buffer ramp full reading from the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC by executing the necessary steps. First, it sets the ADC mode using the {\ttfamily \mbox{\hyperlink{class_a_d4115_aac4e474edfd743b06ade3ca7844b45a6}{adc\+Mode()}}} function. Then, it iterates through all 16 channels and performs the following steps for each active channel\+:
+\begin{DoxyEnumerate}
+\item Waits for the DRDY signal using the {\ttfamily \mbox{\hyperlink{class_a_d4115_aa8db977a1819b37f361fce54ecdfdc22}{wait\+Drdy()}}} function.
+\item Reads the data from the ADC using the {\ttfamily \mbox{\hyperlink{class_a_d4115_a6fda2af1ec68c29a51feb23ba44eb0bc}{data\+Reading()}}} function.
+\item Converts the read data to a decimal value using the {\ttfamily \mbox{\hyperlink{class_a_d4115_abdd6a1d6e51ef730162ab42f711ade70}{three\+Byte\+To\+Int()}}} function and stores it in the {\ttfamily \+\_\+channel\+Decimals} array.
+\item Maps the decimal value to voltage using the {\ttfamily \mbox{\hyperlink{class_a_d4115_a3a38ddcf07b2523a40e6e45bf2065101}{voltage\+Map()}}} function and stores it in the {\ttfamily \+\_\+channel\+Voltages} array. After processing all active channels, the function sets the {\ttfamily \+\_\+adc\+Sync} pin to HIGH. Finally, it iterates through all active channels again and prints the channel number and corresponding voltage to the serial monitor using the {\ttfamily Serial.\+write()} function. The function returns 0 indicating successful execution.
+\end{DoxyEnumerate}
+
+\begin{DoxyReturn}{Returns}
+0 indicating successful execution. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_a2e63269deaac8820da1dba3df23f985b}\label{class_a_d4115_a2e63269deaac8820da1dba3df23f985b}} 
+\index{AD4115@{AD4115}!configChannel@{configChannel}}
+\index{configChannel@{configChannel}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{configChannel()}{configChannel()}}
+{\footnotesize\ttfamily uint8\+\_\+t AD4115\+::config\+Channel (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{channel,  }\item[{uint8\+\_\+t}]{state,  }\item[{uint8\+\_\+t}]{setup,  }\item[{uint8\+\_\+t}]{input\+\_\+1,  }\item[{uint8\+\_\+t}]{input\+\_\+2 }\end{DoxyParamCaption})}
+
+
+
+Configures a channel of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+Config for a specific channel Selects the channel number to modify-\/ ranges from 0 to 15 State\+: 0 disables channel -\/ 1 enables channel Setup\+: which to use. Ranges from 0 to 7 input\+\_\+1 and input\+\_\+2\+: pair of input voltages in ADC -\/-\/\texorpdfstring{$>$}{>} input\+\_\+1\+: int value from 0 to 15 -\/-\/\texorpdfstring{$>$}{>} input\+\_\+2\+: int value from 0 to 16 -- 16 is VINCOM
+
+This function configures the specified channel of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC using the provided parameters. It generates a configuration message by calling the \mbox{\hyperlink{class_a_d4115_a91568ff35b1e833c29eae8a9e4b91eb5}{config\+Channel\+Msg()}} function and transfers the message via SPI communication. The function also includes debug print statements for monitoring the transfer process. After the configuration, it displays the channel states for all channels.
+
+
+\begin{DoxyParams}{Parameters}
+{\em channel} & The channel number to configure. \\
+\hline
+{\em state} & The state (enable = 1/disable = 0) of the channel. \\
+\hline
+{\em setup} & The setup value for the channel. \\
+\hline
+{\em input\+\_\+1} & The first input configuration for the channel. \\
+\hline
+{\em input\+\_\+2} & The second input configuration for the channel.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 indicating successful execution. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_a91568ff35b1e833c29eae8a9e4b91eb5}\label{class_a_d4115_a91568ff35b1e833c29eae8a9e4b91eb5}} 
+\index{AD4115@{AD4115}!configChannelMsg@{configChannelMsg}}
+\index{configChannelMsg@{configChannelMsg}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{configChannelMsg()}{configChannelMsg()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} AD4115\+::config\+Channel\+Msg (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{channel,  }\item[{uint8\+\_\+t}]{state,  }\item[{uint8\+\_\+t}]{setup,  }\item[{uint8\+\_\+t}]{input\+\_\+1,  }\item[{uint8\+\_\+t}]{input\+\_\+2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Generates a configuration message for a specific channel of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function generates a configuration message for the specified channel of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. The message includes the channel register address, channel setup, and channel input configuration. The function performs various checks and validations to ensure the inputs are within valid ranges. Only valid combinations (order doesn\textquotesingle{}t matter) for \mbox{[}input\+\_\+1, input\+\_\+2\mbox{]}\+: \mbox{[}0, 1\mbox{]}, \mbox{[}2, 3\mbox{]}, \mbox{[}4, 5\mbox{]}, \mbox{[}6, 7\mbox{]}, \mbox{[}8, 9\mbox{]}, \mbox{[}10, 11\mbox{]}, \mbox{[}12, 13\mbox{]}, \mbox{[}14, 15\mbox{]} When using VINCOM order does matter\+: \mbox{[}i, 16\mbox{]}, for 0 \texorpdfstring{$<$}{<}= i \texorpdfstring{$<$}{<}= 15
+
+
+\begin{DoxyParams}{Parameters}
+{\em channel} & The channel number to configure. \\
+\hline
+{\em state} & The state (1 = enable/ 0 = disable) of the channel. \\
+\hline
+{\em setup} & The setup value for the channel. For now, only setup 0 works. \\
+\hline
+{\em input\+\_\+1} & The first input BNC for the channel. \\
+\hline
+{\em input\+\_\+2} & The second input BNC for the channel. VINCOM\+: input\+\_\+2 = 16 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} object containing the generated configuration message. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_ad6d2af288b642ed37d4efdc4b9fe7732}\label{class_a_d4115_ad6d2af288b642ed37d4efdc4b9fe7732}} 
+\index{AD4115@{AD4115}!configChannelsTest@{configChannelsTest}}
+\index{configChannelsTest@{configChannelsTest}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{configChannelsTest()}{configChannelsTest()}}
+{\footnotesize\ttfamily uint8\+\_\+t AD4115\+::config\+Channels\+Test (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Performs a test to read and print the configuration of the ADC channels. 
+
+This function performs a test to read and print the configuration of the ADC channels. It reads the channel registers by sending specific message bits to the communications register of the ADC. The function iterates through all 16 channels and performs the following steps for each channel\+:
+\begin{DoxyEnumerate}
+\item Constructs the message bits by combining the communication register bits and the channel index.
+\item Sends the message bits to the ADC using the {\ttfamily SPI.\+transfer()} function.
+\item Reads the data bytes of the channel from the ADC and combines them to obtain a double precision value.
+\item Prints the channel index and the read data bytes, as well as the combined value, to the serial monitor. After processing all channels, the function sets the {\ttfamily \+\_\+adc\+Sync} pin to HIGH and ends the SPI transaction. The function does not return a value. Returns the bits that configured each channel. Check data sheet to read this data. 
+\end{DoxyEnumerate}\mbox{\Hypertarget{class_a_d4115_a6fda2af1ec68c29a51feb23ba44eb0bc}\label{class_a_d4115_a6fda2af1ec68c29a51feb23ba44eb0bc}} 
+\index{AD4115@{AD4115}!dataReading@{dataReading}}
+\index{dataReading@{dataReading}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{dataReading()}{dataReading()}}
+{\footnotesize\ttfamily void AD4115\+::data\+Reading (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Performs data reading from the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function performs data reading from the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC by sending a data reading message generated by the \mbox{\hyperlink{class_a_d4115_a5742f77de027715e8411915cfb5187b0}{data\+Reading\+Msg()}} function via SPI communication. The function sets the block size and number of blocks in the message, begins an SPI transaction, transfers the message data in blocks, and ends the transaction. It uses the SPI.\+transfer() function to send and receive data from the ADC. The first byte of the message is sent without storing the received value, and the following three bytes are received and stored in the \+\_\+data\+Read array. The function iterates through the message blocks and data bytes, excluding the first byte. Finally, it ends the SPI transaction.
+
+\begin{DoxyReturn}{Returns}
+None. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_a5742f77de027715e8411915cfb5187b0}\label{class_a_d4115_a5742f77de027715e8411915cfb5187b0}} 
+\index{AD4115@{AD4115}!dataReadingMsg@{dataReadingMsg}}
+\index{dataReadingMsg@{dataReadingMsg}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{dataReadingMsg()}{dataReadingMsg()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} AD4115\+::data\+Reading\+Msg (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Generates a data reading message for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function generates a data reading message for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. The message is used to request data from the ADC. The function assigns specific values to the elements of the \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} object, representing the command to read data from the ADC. The function then returns the generated message.
+
+\begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} object containing the generated data reading message. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_ac7e6b8f32ec72d0af6d2b7a41542589e}\label{class_a_d4115_ac7e6b8f32ec72d0af6d2b7a41542589e}} 
+\index{AD4115@{AD4115}!disableAllChannels@{disableAllChannels}}
+\index{disableAllChannels@{disableAllChannels}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{disableAllChannels()}{disableAllChannels()}}
+{\footnotesize\ttfamily uint8\+\_\+t AD4115\+::disable\+All\+Channels (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Disables all channels of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function disables all 16 channels of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC by sending a message generated by the \mbox{\hyperlink{class_a_d4115_ae849067f7d9fc974051e29ac39d55d81}{disable\+All\+Channels\+Msg()}} function. It begins the SPI transaction, transfers the data in blocks, and ends the transaction.
+
+\begin{DoxyReturn}{Returns}
+0 indicating successful execution. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_ae849067f7d9fc974051e29ac39d55d81}\label{class_a_d4115_ae849067f7d9fc974051e29ac39d55d81}} 
+\index{AD4115@{AD4115}!disableAllChannelsMsg@{disableAllChannelsMsg}}
+\index{disableAllChannelsMsg@{disableAllChannelsMsg}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{disableAllChannelsMsg()}{disableAllChannelsMsg()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} AD4115\+::disable\+All\+Channels\+Msg (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Creates a message to disable all channels of the \mbox{\hyperlink{class_a_d4115}{AD4115}}. Calls \mbox{\hyperlink{class_a_d4115_a91568ff35b1e833c29eae8a9e4b91eb5}{config\+Channel\+Msg()}} 
+
+This function generates a message to disable all 16 channels of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. It iterates through each channel, configures the appropriate values for disabling, and constructs the resulting message.
+
+\begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} object containing the message to disable all channels. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_a9234a47db79f7f1f247280b535ca3982}\label{class_a_d4115_a9234a47db79f7f1f247280b535ca3982}} 
+\index{AD4115@{AD4115}!fullReading@{fullReading}}
+\index{fullReading@{fullReading}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{fullReading()}{fullReading()}}
+{\footnotesize\ttfamily double AD4115\+::full\+Reading (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Performs a full reading from the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function performs a full reading from the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC by executing the necessary steps. First, it sets the ADC mode using the {\ttfamily \mbox{\hyperlink{class_a_d4115_aac4e474edfd743b06ade3ca7844b45a6}{adc\+Mode()}}} function. Then, it iterates through all 16 channels and performs the following steps for each active channel\+:
+\begin{DoxyEnumerate}
+\item Waits for the DRDY signal using the {\ttfamily \mbox{\hyperlink{class_a_d4115_aa8db977a1819b37f361fce54ecdfdc22}{wait\+Drdy()}}} function.
+\item Reads the data from the ADC using the {\ttfamily \mbox{\hyperlink{class_a_d4115_a6fda2af1ec68c29a51feb23ba44eb0bc}{data\+Reading()}}} function.
+\item Converts the read data to a decimal value using the {\ttfamily \mbox{\hyperlink{class_a_d4115_abdd6a1d6e51ef730162ab42f711ade70}{three\+Byte\+To\+Int()}}} function and stores it in the {\ttfamily \+\_\+channel\+Decimals} array.
+\item Maps the decimal value to voltage using the {\ttfamily \mbox{\hyperlink{class_a_d4115_a3a38ddcf07b2523a40e6e45bf2065101}{voltage\+Map()}}} function and stores it in the {\ttfamily \+\_\+channel\+Voltages} array. After processing all active channels, the function sets the \+\_\+adc\+Sync pin to HIGH. Finally, it iterates through all active channels again and prints the channel number and corresponding voltage to the serial monitor. The function returns 0 indicating successful execution.
+\end{DoxyEnumerate}
+
+\begin{DoxyReturn}{Returns}
+0 indicating successful execution. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_afd0075d25d6047b3d141c31f1ccb08ff}\label{class_a_d4115_afd0075d25d6047b3d141c31f1ccb08ff}} 
+\index{AD4115@{AD4115}!generalConfig@{generalConfig}}
+\index{generalConfig@{generalConfig}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{generalConfig()}{generalConfig()}}
+{\footnotesize\ttfamily uint8\+\_\+t AD4115\+::general\+Config (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{channel,  }\item[{uint8\+\_\+t}]{state,  }\item[{uint8\+\_\+t}]{setup,  }\item[{uint8\+\_\+t}]{input\+\_\+1,  }\item[{uint8\+\_\+t}]{input\+\_\+2 }\end{DoxyParamCaption})}
+
+
+
+Performs the general configuration for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function performs the general configuration for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC by calling the \mbox{\hyperlink{class_a_d4115_a2e63269deaac8820da1dba3df23f985b}{config\+Channel()}}, \mbox{\hyperlink{class_a_d4115_a7c1f99a3d9d42900a1c442aa2e20091d}{setup\+Config()}}, and \mbox{\hyperlink{class_a_d4115_ae3725c1b0523948f42c029593d2be639}{interface\+Mode()}} functions. It passes the specified channel, state, setup, input\+\_\+1, and input\+\_\+2 parameters to the \mbox{\hyperlink{class_a_d4115_a2e63269deaac8820da1dba3df23f985b}{config\+Channel()}} function to configure the channel. It then calls the \mbox{\hyperlink{class_a_d4115_a7c1f99a3d9d42900a1c442aa2e20091d}{setup\+Config()}} function to perform the setup configuration and the \mbox{\hyperlink{class_a_d4115_ae3725c1b0523948f42c029593d2be639}{interface\+Mode()}} function to configure the interface mode. The resulting values of the individual configuration steps are stored in db1, db2, and db3, respectively. The function returns 0 indicating successful execution.
+
+
+\begin{DoxyParams}{Parameters}
+{\em channel} & The channel number to configure. \\
+\hline
+{\em state} & The state (enable/disable) of the channel. \\
+\hline
+{\em setup} & The setup value for the channel. \\
+\hline
+{\em input\+\_\+1} & The first input configuration for the channel. \\
+\hline
+{\em input\+\_\+2} & The second input configuration for the channel.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 indicating successful execution. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_ae3725c1b0523948f42c029593d2be639}\label{class_a_d4115_ae3725c1b0523948f42c029593d2be639}} 
+\index{AD4115@{AD4115}!interfaceMode@{interfaceMode}}
+\index{interfaceMode@{interfaceMode}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{interfaceMode()}{interfaceMode()}}
+{\footnotesize\ttfamily uint8\+\_\+t AD4115\+::interface\+Mode (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Performs the interface mode configuration for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function performs the interface mode configuration for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC by sending the interface mode message generated by the \mbox{\hyperlink{class_a_d4115_a6469691e5361a1997ed155ccd2260ed8}{interface\+Mode\+Msg()}} function via SPI communication. The function sets the block size and number of blocks in the message, begins an SPI transaction, transfers the message data in blocks, and ends the transaction. Finally, it sets the SYNC pin to HIGH to signal the end of the general configuration.
+
+\begin{DoxyReturn}{Returns}
+0 indicating successful execution. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_a6469691e5361a1997ed155ccd2260ed8}\label{class_a_d4115_a6469691e5361a1997ed155ccd2260ed8}} 
+\index{AD4115@{AD4115}!interfaceModeMsg@{interfaceModeMsg}}
+\index{interfaceModeMsg@{interfaceModeMsg}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{interfaceModeMsg()}{interfaceModeMsg()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} AD4115\+::interface\+Mode\+Msg (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Generates an interface mode message for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function generates an interface mode message for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. The message includes specific values for different configuration parameters related to the ADC\textquotesingle{}s interface mode. The function constructs the message by assigning values to the corresponding elements of the \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} object and returns the resulting message.
+
+\begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} object containing the generated interface mode message. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_aec7b9d4670a67767579026f2b122384b}\label{class_a_d4115_aec7b9d4670a67767579026f2b122384b}} 
+\index{AD4115@{AD4115}!readId@{readId}}
+\index{readId@{readId}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{readId()}{readId()}}
+{\footnotesize\ttfamily uint8\+\_\+t AD4115\+::read\+Id (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Reads the ID register of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function reads the ID register of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC via SPI communication. It sends the appropriate commands to the ADC, receives the ID bytes, and combines them to form a single 8-\/bit ID value. The ID value is then printed to the Serial monitor.
+
+\begin{DoxyReturn}{Returns}
+None. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_abbbe819d13095ebf0dbef2a7701513da}\label{class_a_d4115_abbbe819d13095ebf0dbef2a7701513da}} 
+\index{AD4115@{AD4115}!resetAdc@{resetAdc}}
+\index{resetAdc@{resetAdc}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{resetAdc()}{resetAdc()}}
+{\footnotesize\ttfamily uint8\+\_\+t AD4115\+::reset\+Adc (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Resets the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function performs a reset operation on the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. It begins an SPI transaction, sends a sequence of reset commands, and ends the transaction. The function includes a delay after the reset commands to allow time for the reset operation to complete.
+
+\begin{DoxyReturn}{Returns}
+0 indicating successful execution. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_a7c1f99a3d9d42900a1c442aa2e20091d}\label{class_a_d4115_a7c1f99a3d9d42900a1c442aa2e20091d}} 
+\index{AD4115@{AD4115}!setupConfig@{setupConfig}}
+\index{setupConfig@{setupConfig}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{setupConfig()}{setupConfig()}}
+{\footnotesize\ttfamily uint8\+\_\+t AD4115\+::setup\+Config (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Generates a setup configuration message for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function generates a setup configuration message for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. The message includes specific values for different configuration parameters, such as address, buffer enable/disable settings, output coding, and reference source selection. The function constructs the message by assigning values to the corresponding elements of the \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} object and returns the resulting message. In general\+Config
+
+\begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} object containing the generated setup configuration message. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_a8efbace5366afd4ee80011b680886ae3}\label{class_a_d4115_a8efbace5366afd4ee80011b680886ae3}} 
+\index{AD4115@{AD4115}!setupConfigMsg@{setupConfigMsg}}
+\index{setupConfigMsg@{setupConfigMsg}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{setupConfigMsg()}{setupConfigMsg()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} AD4115\+::setup\+Config\+Msg (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Generates a setup configuration message for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function generates a setup configuration message for the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. The message includes specific values for different configuration parameters, such as address, buffer enable/disable settings, output coding, and reference source selection. The function constructs the message by assigning values to the corresponding elements of the \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} object and returns the resulting message.
+
+\begin{DoxyReturn}{Returns}
+A \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} object containing the generated setup configuration message. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_abdd6a1d6e51ef730162ab42f711ade70}\label{class_a_d4115_abdd6a1d6e51ef730162ab42f711ade70}} 
+\index{AD4115@{AD4115}!threeByteToInt@{threeByteToInt}}
+\index{threeByteToInt@{threeByteToInt}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{threeByteToInt()}{threeByteToInt()}}
+{\footnotesize\ttfamily double AD4115\+::three\+Byte\+To\+Int (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{db1,  }\item[{uint8\+\_\+t}]{db2,  }\item[{uint8\+\_\+t}]{db3 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Converts three bytes to a double precision integer. 
+
+This function converts three bytes to a double precision integer by performing bitwise operations. It takes three bytes (db1, db2, db3) as input and combines them into a 24-\/bit integer value. The function performs left-\/shift operations on db1 and db2 to position them correctly, and then adds db3 to the result. The resulting value represents the three bytes combined into a double precision integer. The function returns the converted value as a double precision floating-\/point number.
+
+
+\begin{DoxyParams}{Parameters}
+{\em db1} & The most significant byte of the three-\/byte value. \\
+\hline
+{\em db2} & The middle byte of the three-\/byte value. \\
+\hline
+{\em db3} & The least significant byte of the three-\/byte value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The converted value as a double precision floating-\/point number. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_a5f7d96456494251f0dd5dbde5d134070}\label{class_a_d4115_a5f7d96456494251f0dd5dbde5d134070}} 
+\index{AD4115@{AD4115}!twoByteToInt@{twoByteToInt}}
+\index{twoByteToInt@{twoByteToInt}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{twoByteToInt()}{twoByteToInt()}}
+{\footnotesize\ttfamily uint32\+\_\+t AD4115\+::two\+Byte\+To\+Int (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{ad5791_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}}}]{db1,  }\item[{\mbox{\hyperlink{ad5791_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}}}]{db2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Converts two bytes to a 32-\/bit unsigned integer. 
+
+This function takes two bytes as input and combines them to form a 32-\/bit unsigned integer. It performs a bitwise shift operation to concatenate the bytes and returns the resulting value.
+
+
+\begin{DoxyParams}{Parameters}
+{\em db1} & The most significant byte. \\
+\hline
+{\em db2} & The least significant byte.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A 32-\/bit unsigned integer formed by combining the input bytes. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_ace57ff34808034de2101671613807753}\label{class_a_d4115_ace57ff34808034de2101671613807753}} 
+\index{AD4115@{AD4115}!updateChannelStates@{updateChannelStates}}
+\index{updateChannelStates@{updateChannelStates}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{updateChannelStates()}{updateChannelStates()}}
+{\footnotesize\ttfamily uint8\+\_\+t AD4115\+::update\+Channel\+States (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Updates the channel states based on the ADC response. 
+
+This function updates the channel states based on the response received from the ADC. It sends commands to the ADC to read the state of each channel, extracts the state information from the response, and updates the corresponding channel state in the \+\_\+channel\+States array. The function uses SPI communication to transfer the commands and responses with the ADC. It sets the block size and number of blocks in the \mbox{\hyperlink{structspi__utils_1_1_message}{spi\+\_\+utils\+::\+Message}} object, begins an SPI transaction, transfers the data in blocks, and ends the transaction. The \+\_\+adc\+Sync pin is used to control the synchronization of the SPI communication. The function returns 0 indicating successful execution. Function not in use under the current configuration.
+
+\begin{DoxyReturn}{Returns}
+0 indicating successful execution. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_a3a38ddcf07b2523a40e6e45bf2065101}\label{class_a_d4115_a3a38ddcf07b2523a40e6e45bf2065101}} 
+\index{AD4115@{AD4115}!voltageMap@{voltageMap}}
+\index{voltageMap@{voltageMap}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{voltageMap()}{voltageMap()}}
+{\footnotesize\ttfamily double AD4115\+::voltage\+Map (\begin{DoxyParamCaption}\item[{double}]{decimal }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Maps the decimal value to voltage. 
+
+This function maps a decimal value to voltage using a specific formula. It takes a decimal value as input, divides it by 8388607 (2$^\wedge$23 -\/ 1), subtracts 1, and multiplies the result by 25. The resulting value represents the voltage mapped from the decimal input. The function returns the mapped voltage as a double precision value.
+
+
+\begin{DoxyParams}{Parameters}
+{\em decimal} & The decimal value to be mapped to voltage. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The mapped voltage as a double precision value. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_a_d4115_aa8db977a1819b37f361fce54ecdfdc22}\label{class_a_d4115_aa8db977a1819b37f361fce54ecdfdc22}} 
+\index{AD4115@{AD4115}!waitDrdy@{waitDrdy}}
+\index{waitDrdy@{waitDrdy}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{waitDrdy()}{waitDrdy()}}
+{\footnotesize\ttfamily void AD4115\+::wait\+Drdy (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Waits for the DRDY (data ready) signal of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC. 
+
+This function waits until the DRDY pin of the \mbox{\hyperlink{class_a_d4115}{AD4115}} ADC transitions to a LOW state, indicating that new data is available. It uses a busy-\/wait loop to continuously check the state of the DRDY pin. The function exits when the DRDY pin transitions to a LOW state. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_a_d4115_a302c5c92e3f552cb3533774548e831dd}\label{class_a_d4115_a302c5c92e3f552cb3533774548e831dd}} 
+\index{AD4115@{AD4115}!\_adcSync@{\_adcSync}}
+\index{\_adcSync@{\_adcSync}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{\_adcSync}{\_adcSync}}
+{\footnotesize\ttfamily uint8\+\_\+t AD4115\+::\+\_\+adc\+Sync\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_a_d4115_a75525dcfd9eb44b5eef256d74c6a75f2}\label{class_a_d4115_a75525dcfd9eb44b5eef256d74c6a75f2}} 
+\index{AD4115@{AD4115}!\_channelDecimals@{\_channelDecimals}}
+\index{\_channelDecimals@{\_channelDecimals}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{\_channelDecimals}{\_channelDecimals}}
+{\footnotesize\ttfamily double AD4115\+::\+\_\+channel\+Decimals\mbox{[}16\mbox{]} = \{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0\}\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_a_d4115_a16bc7730f1e74348a929905b6daaa2b1}\label{class_a_d4115_a16bc7730f1e74348a929905b6daaa2b1}} 
+\index{AD4115@{AD4115}!\_channelStates@{\_channelStates}}
+\index{\_channelStates@{\_channelStates}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{\_channelStates}{\_channelStates}}
+{\footnotesize\ttfamily int AD4115\+::\+\_\+channel\+States\mbox{[}16\mbox{]} = \{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0\}\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_a_d4115_a8574163e050be49fbdd0ba77b63d2e2e}\label{class_a_d4115_a8574163e050be49fbdd0ba77b63d2e2e}} 
+\index{AD4115@{AD4115}!\_channelVoltages@{\_channelVoltages}}
+\index{\_channelVoltages@{\_channelVoltages}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{\_channelVoltages}{\_channelVoltages}}
+{\footnotesize\ttfamily double AD4115\+::\+\_\+channel\+Voltages\mbox{[}16\mbox{]} = \{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0\}\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_a_d4115_ae5738aefbad3e8aee04c831efecc2ae5}\label{class_a_d4115_ae5738aefbad3e8aee04c831efecc2ae5}} 
+\index{AD4115@{AD4115}!\_dataRead@{\_dataRead}}
+\index{\_dataRead@{\_dataRead}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{\_dataRead}{\_dataRead}}
+{\footnotesize\ttfamily uint8\+\_\+t AD4115\+::\+\_\+data\+Read\mbox{[}3\mbox{]}\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_a_d4115_ae3733c13e2d850b3016590b2c87a2a1a}\label{class_a_d4115_ae3733c13e2d850b3016590b2c87a2a1a}} 
+\index{AD4115@{AD4115}!\_drdy@{\_drdy}}
+\index{\_drdy@{\_drdy}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{\_drdy}{\_drdy}}
+{\footnotesize\ttfamily uint8\+\_\+t AD4115\+::\+\_\+drdy\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_a_d4115_a1dad24da48a236230a173c9b3abf8e00}\label{class_a_d4115_a1dad24da48a236230a173c9b3abf8e00}} 
+\index{AD4115@{AD4115}!adcSettings@{adcSettings}}
+\index{adcSettings@{adcSettings}!AD4115@{AD4115}}
+\doxysubsubsection{\texorpdfstring{adcSettings}{adcSettings}}
+{\footnotesize\ttfamily SPISettings AD4115\+::adc\+Settings = SPISettings(10000000, MSBFIRST, SPI\+\_\+\+MODE3)}
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/benja/\+Documents/\+Repos/od-\/dacadc/include/\mbox{\hyperlink{ad4115_8h}{ad4115.\+h}}\item 
+C\+:/\+Users/benja/\+Documents/\+Repos/od-\/dacadc/src/\mbox{\hyperlink{ad4115_8cpp}{ad4115.\+cpp}}\end{DoxyCompactItemize}
