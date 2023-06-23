@@ -1,0 +1,60 @@
+\hypertarget{structspi__utils_1_1_message}{}\doxysection{spi\+\_\+utils\+::Message Struct Reference}
+\label{structspi__utils_1_1_message}\index{spi\_utils::Message@{spi\_utils::Message}}
+
+
+{\ttfamily \#include $<$utils.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{ad5791_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}} \mbox{\hyperlink{structspi__utils_1_1_message_a6e5913cc18e999886e2b2bdc709ecd1f}{msg}} \mbox{[}\mbox{\hyperlink{structspi__utils_1_1_message_a25c6c7a32d7eb69a6660098cc4a7b291}{k\+Data\+Len}}\mbox{]}
+\item 
+\mbox{\hyperlink{ad5791_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}} \mbox{\hyperlink{structspi__utils_1_1_message_af722431f5bff3e4efea7b7bd6a314572}{data}} \mbox{[}\mbox{\hyperlink{structspi__utils_1_1_message_a25c6c7a32d7eb69a6660098cc4a7b291}{k\+Data\+Len}}\mbox{]}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structspi__utils_1_1_message_a5cc96d73b5c86a7888d675fba0a5bffd}{block\+Size}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structspi__utils_1_1_message_a20dd8b1ebe4f4483cd887c058a6551f6}{n\+Blocks}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const uint8\+\_\+t \mbox{\hyperlink{structspi__utils_1_1_message_a25c6c7a32d7eb69a6660098cc4a7b291}{k\+Data\+Len}} = 64
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structspi__utils_1_1_message_a5cc96d73b5c86a7888d675fba0a5bffd}\label{structspi__utils_1_1_message_a5cc96d73b5c86a7888d675fba0a5bffd}} 
+\index{spi\_utils::Message@{spi\_utils::Message}!blockSize@{blockSize}}
+\index{blockSize@{blockSize}!spi\_utils::Message@{spi\_utils::Message}}
+\doxysubsubsection{\texorpdfstring{blockSize}{blockSize}}
+{\footnotesize\ttfamily uint8\+\_\+t spi\+\_\+utils\+::\+Message\+::block\+Size}
+
+The size in bytes of the registers to be written. It can be also be thought of as the number of bytes to be sent before setting the sync\+\_\+pin\+\_\+ to HIGH. (block\+Size$\ast$n\+Blocks \texorpdfstring{$<$}{<}= k\+Data\+Len) \mbox{\Hypertarget{structspi__utils_1_1_message_af722431f5bff3e4efea7b7bd6a314572}\label{structspi__utils_1_1_message_af722431f5bff3e4efea7b7bd6a314572}} 
+\index{spi\_utils::Message@{spi\_utils::Message}!data@{data}}
+\index{data@{data}!spi\_utils::Message@{spi\_utils::Message}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily \mbox{\hyperlink{ad5791_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}} spi\+\_\+utils\+::\+Message\+::data\mbox{[}\mbox{\hyperlink{structspi__utils_1_1_message_a25c6c7a32d7eb69a6660098cc4a7b291}{k\+Data\+Len}}\mbox{]}}
+
+\mbox{\Hypertarget{structspi__utils_1_1_message_a25c6c7a32d7eb69a6660098cc4a7b291}\label{structspi__utils_1_1_message_a25c6c7a32d7eb69a6660098cc4a7b291}} 
+\index{spi\_utils::Message@{spi\_utils::Message}!kDataLen@{kDataLen}}
+\index{kDataLen@{kDataLen}!spi\_utils::Message@{spi\_utils::Message}}
+\doxysubsubsection{\texorpdfstring{kDataLen}{kDataLen}}
+{\footnotesize\ttfamily const uint8\+\_\+t spi\+\_\+utils\+::\+Message\+::k\+Data\+Len = 64\hspace{0.3cm}{\ttfamily [static]}}
+
+Size of msg. (block\+Size$\ast$n\+Blocks \texorpdfstring{$<$}{<}= k\+Data\+Len) \mbox{\Hypertarget{structspi__utils_1_1_message_a6e5913cc18e999886e2b2bdc709ecd1f}\label{structspi__utils_1_1_message_a6e5913cc18e999886e2b2bdc709ecd1f}} 
+\index{spi\_utils::Message@{spi\_utils::Message}!msg@{msg}}
+\index{msg@{msg}!spi\_utils::Message@{spi\_utils::Message}}
+\doxysubsubsection{\texorpdfstring{msg}{msg}}
+{\footnotesize\ttfamily \mbox{\hyperlink{ad5791_8h_a0c8186d9b9b7880309c27230bbb5e69d}{byte}} spi\+\_\+utils\+::\+Message\+::msg\mbox{[}\mbox{\hyperlink{structspi__utils_1_1_message_a25c6c7a32d7eb69a6660098cc4a7b291}{k\+Data\+Len}}\mbox{]}}
+
+\mbox{\hyperlink{structspi__utils_1_1_message}{Message}} to be sent via SPI. Each element represents a byte. This message is separated could be divided in blocks. \mbox{\Hypertarget{structspi__utils_1_1_message_a20dd8b1ebe4f4483cd887c058a6551f6}\label{structspi__utils_1_1_message_a20dd8b1ebe4f4483cd887c058a6551f6}} 
+\index{spi\_utils::Message@{spi\_utils::Message}!nBlocks@{nBlocks}}
+\index{nBlocks@{nBlocks}!spi\_utils::Message@{spi\_utils::Message}}
+\doxysubsubsection{\texorpdfstring{nBlocks}{nBlocks}}
+{\footnotesize\ttfamily uint8\+\_\+t spi\+\_\+utils\+::\+Message\+::n\+Blocks}
+
+The number of blocks. Each block starts with a sync\+\_\+pin\+\_\+ to LOW and ends with a sync\+\_\+pin\+\_\+ to HIGH. (block\+Size$\ast$n\+Blocks \texorpdfstring{$<$}{<}= k\+Data\+Len) 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/benja/\+Documents/\+Repos/od-\/dacadc/include/\mbox{\hyperlink{utils_8h}{utils.\+h}}\end{DoxyCompactItemize}
