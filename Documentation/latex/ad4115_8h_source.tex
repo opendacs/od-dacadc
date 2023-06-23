@@ -1,0 +1,65 @@
+\hypertarget{ad4115_8h_source}{}\doxysection{ad4115.\+h}
+\label{ad4115_8h_source}\index{C:/Users/benja/Documents/Repos/od-\/dacadc/include/ad4115.h@{C:/Users/benja/Documents/Repos/od-\/dacadc/include/ad4115.h}}
+\mbox{\hyperlink{ad4115_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ AD4115\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ AD4115\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <SPI.h>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{utils_8h}{utils.h}}"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{using\ namespace\ }std;}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_a_d4115}{AD4115}}\ }
+\DoxyCodeLine{00010\ \{}
+\DoxyCodeLine{00011\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structspi__utils_1_1_message}{spi\_utils::Message}}\ \mbox{\hyperlink{class_a_d4115_ae849067f7d9fc974051e29ac39d55d81}{disableAllChannelsMsg}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structspi__utils_1_1_message}{spi\_utils::Message}}\ \mbox{\hyperlink{class_a_d4115_a8efbace5366afd4ee80011b680886ae3}{setupConfigMsg}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structspi__utils_1_1_message}{spi\_utils::Message}}\ \mbox{\hyperlink{class_a_d4115_a91568ff35b1e833c29eae8a9e4b91eb5}{configChannelMsg}}(uint8\_t\ channel,\ uint8\_t\ state,\ uint8\_t\ setup,\ uint8\_t\ input\_1,\ uint8\_t\ input\_2);}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structspi__utils_1_1_message}{spi\_utils::Message}}\ \mbox{\hyperlink{class_a_d4115_a6469691e5361a1997ed155ccd2260ed8}{interfaceModeMsg}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structspi__utils_1_1_message}{spi\_utils::Message}}\ \mbox{\hyperlink{class_a_d4115_a1e411adef98c6bb434878ffedf2c2fc6}{adcModeMsg}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{structspi__utils_1_1_message}{spi\_utils::Message}}\ \mbox{\hyperlink{class_a_d4115_a5742f77de027715e8411915cfb5187b0}{dataReadingMsg}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{comment}{//Functions}}
+\DoxyCodeLine{00021\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{class_a_d4115_a5f7d96456494251f0dd5dbde5d134070}{twoByteToInt}}(\textcolor{keywordtype}{byte}\ db1,\ \textcolor{keywordtype}{byte}\ db2);}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_a_d4115_abdd6a1d6e51ef730162ab42f711ade70}{threeByteToInt}}(uint8\_t\ db1,\ uint8\_t\ db2,\ uint8\_t\ db3);}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_a_d4115_a3a38ddcf07b2523a40e6e45bf2065101}{voltageMap}}(\textcolor{keywordtype}{double}\ decimal);}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_a_d4115_aa8db977a1819b37f361fce54ecdfdc22}{waitDrdy}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00025\ \ \ \ \ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{comment}{//Variables}}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_a_d4115_a16bc7730f1e74348a929905b6daaa2b1}{\_channelStates}}[16]\ =\ \{0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\};}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_a_d4115_a75525dcfd9eb44b5eef256d74c6a75f2}{\_channelDecimals}}[16]\ =\ \{0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\};}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_a_d4115_a8574163e050be49fbdd0ba77b63d2e2e}{\_channelVoltages}}[16]\ =\ \{0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0,\ 0\};}
+\DoxyCodeLine{00030\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{class_a_d4115_ae5738aefbad3e8aee04c831efecc2ae5}{\_dataRead}}[3];}
+\DoxyCodeLine{00031\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{class_a_d4115_a302c5c92e3f552cb3533774548e831dd}{\_adcSync}};}
+\DoxyCodeLine{00032\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{class_a_d4115_ae3733c13e2d850b3016590b2c87a2a1a}{\_drdy}};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{comment}{//Constructor}}
+\DoxyCodeLine{00036\ \ \ \ \ \mbox{\hyperlink{class_a_d4115_a73528ef18d788f401f643af1d5f98afe}{AD4115}}(uint8\_t\ adcSync,\ uint8\_t\ drdy);}
+\DoxyCodeLine{00037\ \ \ \ \ \mbox{\hyperlink{class_a_d4115_a73528ef18d788f401f643af1d5f98afe}{AD4115}}(\textcolor{keywordtype}{void})\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00038\ \ \ \ \ SPISettings\ \mbox{\hyperlink{class_a_d4115_a1dad24da48a236230a173c9b3abf8e00}{adcSettings}}\ =\ SPISettings(10000000,\ MSBFIRST,\ SPI\_MODE3);}
+\DoxyCodeLine{00050\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{class_a_d4115_a2e63269deaac8820da1dba3df23f985b}{configChannel}}(uint8\_t\ channel,\ uint8\_t\ state,\ uint8\_t\ setup,\ uint8\_t\ input\_1,\ uint8\_t\ input\_2);}
+\DoxyCodeLine{00051\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{class_a_d4115_ac7e6b8f32ec72d0af6d2b7a41542589e}{disableAllChannels}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00052\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{class_a_d4115_a7c1f99a3d9d42900a1c442aa2e20091d}{setupConfig}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00053\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{class_a_d4115_afd0075d25d6047b3d141c31f1ccb08ff}{generalConfig}}(uint8\_t\ channel,\ uint8\_t\ state,\ uint8\_t\ setup,\ uint8\_t\ input\_1,\ uint8\_t\ input\_2);}
+\DoxyCodeLine{00054\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{class_a_d4115_aec7b9d4670a67767579026f2b122384b}{readId}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00055\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{class_a_d4115_ae3725c1b0523948f42c029593d2be639}{interfaceMode}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_a_d4115_aac4e474edfd743b06ade3ca7844b45a6}{adcMode}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_a_d4115_a6fda2af1ec68c29a51feb23ba44eb0bc}{dataReading}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{comment}{//Returns\ array\ of\ size\ 16-\/-\/0\ if\ deactivated,\ 1\ if\ activated}}
+\DoxyCodeLine{00059\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{class_a_d4115_ace57ff34808034de2101671613807753}{updateChannelStates}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{comment}{//Iterates\ through\ array\ and\ counts\ the\ 1s-\/-\/returns\ integer}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_a_d4115_a9234a47db79f7f1f247280b535ca3982}{fullReading}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_a_d4115_a45ff658cc47cc6246ffcb1b913cec91f}{bufferRampFullReading}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00063\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{class_a_d4115_abbbe819d13095ebf0dbef2a7701513da}{resetAdc}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{comment}{//Test\ functions}}
+\DoxyCodeLine{00066\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{class_a_d4115_ad6d2af288b642ed37d4efdc4b9fe7732}{configChannelsTest}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ AD4115\_H}}
+
+\end{DoxyCode}

@@ -1,0 +1,136 @@
+\hypertarget{ramp_8cpp_source}{}\doxysection{ramp.\+cpp}
+\label{ramp_8cpp_source}\index{src/ramp.cpp@{src/ramp.cpp}}
+\mbox{\hyperlink{ramp_8cpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00001}00001\ \textcolor{preprocessor}{\#include\ "{}../include/ramp.h"{}}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00002}00002\ \textcolor{preprocessor}{\#include\ "{}../include/ad5791.h"{}}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00003}00003\ \textcolor{preprocessor}{\#include\ "{}../include/ad4115.h"{}}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00004}00004\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00005}00005\ \textcolor{preprocessor}{\#include\ <SPI.h>}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00006}00006\ \textcolor{preprocessor}{\#include\ <cstdlib>}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00007}00007\ \textcolor{preprocessor}{\#include\ <WString.h>}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00008}00008\ \textcolor{preprocessor}{\#include\ <Arduino.h>}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00009}00009\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00010}00010\ \textcolor{keyword}{using\ namespace\ }std;}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00020}\mbox{\hyperlink{class_r_a_m_p_s_a339b894de9e223f6e1401365dc750d40}{00020}}\ \mbox{\hyperlink{class_r_a_m_p_s_a339b894de9e223f6e1401365dc750d40}{RAMPS::RAMPS}}(\mbox{\hyperlink{class_a_d5791}{AD5791}}\&\ dac,\ \mbox{\hyperlink{class_a_d4115}{AD4115}}\&\ adc)\ :\ dac(dac),\ adc(adc)\ \{\}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00032}\mbox{\hyperlink{class_r_a_m_p_s_adf1c30dc2d4d56ca57ad39edef05f0d9}{00032}}\ uint8\_t\ \mbox{\hyperlink{class_r_a_m_p_s_adf1c30dc2d4d56ca57ad39edef05f0d9}{RAMPS::setVi}}(uint8\_t\ channelsDac[4],\ \textcolor{keywordtype}{double}\ vi[4])\ \{}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00033}00033\ \ \ \ \ \textcolor{keywordtype}{double}\ voltage\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00034}00034\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 4;\ i\ ++)\ \{}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00035}00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (channelsDac[i]\ ==\ 1)\ \{}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00036}00036\ \ \ \ \ \ \ \ \ \ \ \ \ voltage\ =\ \mbox{\hyperlink{class_r_a_m_p_s_a4b6fecd56dff6380fe9225d0d0d10977}{dac}}.\mbox{\hyperlink{class_a_d5791_a913259b0645069859ee6d7046a10a912}{setVoltage}}(i,\ vi[i],\ \textcolor{keyword}{true});}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00037}00037\ \ \ \ \ \ \ \textcolor{comment}{//\ Serial.println("{}DAC\ "{});}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Serial.print(i);}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00039}00039\ \ \ \ \ \ \ \textcolor{comment}{//\ Serial.print("{}\ |\ SET\ INITIALLY\ TO\ "{});}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00040}00040\ \ \ \ \ \ \ \textcolor{comment}{//\ Serial.print(vi[i]);}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00041}00041\ \ \ \ \ \ \ \textcolor{comment}{//\ Serial.println(voltage);}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00042}00042\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00043}00043\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00044}00044\ \}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00059}\mbox{\hyperlink{class_r_a_m_p_s_a7b9085914df8b81df869595a80ca26b3}{00059}}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{class_r_a_m_p_s_a7b9085914df8b81df869595a80ca26b3}{RAMPS::calcDv}}(uint8\_t\ channelsDac[4],\ \textcolor{keywordtype}{double}\ vi[4],\ \textcolor{keywordtype}{double}\ vf[4],\ \textcolor{keywordtype}{double}\ nSteps)\ \{}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00060}00060\ \ \ \textcolor{comment}{//Updates\ values\ of\ dv[i]\ stored\ in\ class:private.}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00061}00061\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ 4;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00062}00062\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (channelsDac[i]\ ==\ 1)\ \{}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00063}00063\ \ \ \ \ \ \ \mbox{\hyperlink{class_r_a_m_p_s_a3c8aa86b46b0250bca3dbf785c76f671}{dv}}[i]\ =\ (vf[i]\ -\/\ vi[i])\ /\ nSteps;\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00064}00064\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00065}00065\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00066}00066\ \ \ \textcolor{comment}{//Serial.println("{}"{});}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00068}00068\ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00069}00069\ \}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00088}\mbox{\hyperlink{class_r_a_m_p_s_af33776eda68a6ac949d5ab717986712b}{00088}}\ uint8\_t\ \mbox{\hyperlink{class_r_a_m_p_s_af33776eda68a6ac949d5ab717986712b}{RAMPS::simpleRampIteration}}(uint8\_t\ channelsDac[4],\ \textcolor{keywordtype}{double}\ vi[4],\ \textcolor{keywordtype}{double}\ nSteps,\ \textcolor{keywordtype}{double}\ del)\ \{}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00089}00089\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00090}00090\ \ \ \textcolor{keywordtype}{double}\ dv\_j;}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00091}00091\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00092}00092\ \ \ delay(del);}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00093}00093\ \ \ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00094}00094\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ nSteps;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00095}00095\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 4;\ j++)\ \{}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00096}00096\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (channelsDac[j]\ ==\ 1)\ \{}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00097}00097\ \ \ \ \ \ \ \ \ dv\_j\ =\ \mbox{\hyperlink{class_r_a_m_p_s_a3c8aa86b46b0250bca3dbf785c76f671}{dv}}[j];}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00099}00099\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Update\ channel\ i\ voltage}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00100}00100\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_r_a_m_p_s_a4b6fecd56dff6380fe9225d0d0d10977}{dac}}.\mbox{\hyperlink{class_a_d5791_a913259b0645069859ee6d7046a10a912}{setVoltage}}(j,\ vi[j]\ +\ ((i+1)*dv\_j),\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00101}00101\ \ \ \ \ \ \ \ \ Serial.println(vi[j]\ +\ ((i+1)*dv\_j));}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00102}00102\ \ \ \ \ \ \ \ \ Serial.print(\textcolor{stringliteral}{"{}vReadings[j]"{}});}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00103}00103\ \ \ \ \ \ \ \ \ Serial.println(\mbox{\hyperlink{class_r_a_m_p_s_a4b6fecd56dff6380fe9225d0d0d10977}{dac}}.\mbox{\hyperlink{class_a_d5791_a41ac934555dba2f5ddf61d88adb04e7f}{vReadings}}[j]);}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00104}00104\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00105}00105\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00106}00106\ \ \ \ \ \textcolor{comment}{//set\ LDAC\ pin\ to\ low\ to\ update\ all\ channels\ simultaneously}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00107}00107\ \ \ \ \ \mbox{\hyperlink{class_r_a_m_p_s_a4b6fecd56dff6380fe9225d0d0d10977}{dac}}.\mbox{\hyperlink{class_a_d5791_a8d9b1d3950512f2ceac000f90e1fede3}{updateAnalogOutputs}}();}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00108}00108\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00109}00109\ \ \ \ \ \textcolor{comment}{//delay\ of\ input\ delay}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00110}00110\ \ \ \ \ delay(del);}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00111}00111\ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00112}00112\ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00113}00113\ \}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00114}00114\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00134}\mbox{\hyperlink{class_r_a_m_p_s_ad5d74da24d876a4fe62fdd08388c5383}{00134}}\ uint8\_t\ \mbox{\hyperlink{class_r_a_m_p_s_ad5d74da24d876a4fe62fdd08388c5383}{RAMPS::bufferRampIteration}}(uint8\_t\ channelsDac[4],\ \textcolor{keywordtype}{double}\ vi[4],\ \textcolor{keywordtype}{double}\ nSteps,\ \textcolor{keywordtype}{double}\ del)\ \{}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00135}00135\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00136}00136\ \ \ \textcolor{keywordtype}{double}\ dv\_j;}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00137}00137\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00138}00138\ \ \ \textcolor{comment}{//Initial\ delay\ before\ first\ step}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00139}00139\ \ \ delay(del);}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00141}00141\ \ \ \textcolor{comment}{//Initial\ reading\ before\ first\ step}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00142}00142\ \ \ \mbox{\hyperlink{class_r_a_m_p_s_a7e5f3fc027728688c557df8cfe5ad09d}{adc}}.\mbox{\hyperlink{class_a_d4115_a45ff658cc47cc6246ffcb1b913cec91f}{bufferRampFullReading}}();}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00143}00143\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00144}00144\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00145}00145\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ nSteps;\ i++)\ \{}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00146}00146\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ 4;\ j++)\ \{}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00147}00147\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (channelsDac[j]\ ==\ 1)\ \{}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00148}00148\ \ \ \ \ \ \ \ \ dv\_j\ =\ \mbox{\hyperlink{class_r_a_m_p_s_a3c8aa86b46b0250bca3dbf785c76f671}{dv}}[j];}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00149}00149\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00150}00150\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Update\ channel\ i\ voltage}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00151}00151\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_r_a_m_p_s_a4b6fecd56dff6380fe9225d0d0d10977}{dac}}.\mbox{\hyperlink{class_a_d5791_a913259b0645069859ee6d7046a10a912}{setVoltage}}(j,\ vi[j]\ +\ ((i+1)*dv\_j),\ \textcolor{keyword}{false});}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00152}00152\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Serial.print("{}vReadings[j]:\ "{});}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00153}00153\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Serial.println(dac.vReadings[j]);}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00154}00154\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00155}00155\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00156}00156\ \ \ \ \ \textcolor{comment}{//set\ LDAC\ pin\ to\ low\ to\ update\ all\ channels\ simultaneously}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00157}00157\ \ \ \ \ \mbox{\hyperlink{class_r_a_m_p_s_a4b6fecd56dff6380fe9225d0d0d10977}{dac}}.\mbox{\hyperlink{class_a_d5791_a8d9b1d3950512f2ceac000f90e1fede3}{updateAnalogOutputs}}();}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00158}00158\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00159}00159\ \ \ \ \ \textcolor{comment}{//delay\ of\ input\ delay}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00160}00160\ \ \ \ \ delay(del);}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00161}00161\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00162}00162\ \ \ \ \ \textcolor{comment}{//Read}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00163}00163\ \ \ \ \ \mbox{\hyperlink{class_r_a_m_p_s_a7e5f3fc027728688c557df8cfe5ad09d}{adc}}.\mbox{\hyperlink{class_a_d4115_a45ff658cc47cc6246ffcb1b913cec91f}{bufferRampFullReading}}();}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00164}00164\ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00165}00165\ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00166}00166\ \}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00167}00167\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00189}\mbox{\hyperlink{class_r_a_m_p_s_a1c6a66c1201b98f85a3997910b704ada}{00189}}\ uint8\_t\ \mbox{\hyperlink{class_r_a_m_p_s_a1c6a66c1201b98f85a3997910b704ada}{RAMPS::simpleRamp}}(uint8\_t\ channelsDac[4],\ \textcolor{keywordtype}{double}\ vi[4],\ \textcolor{keywordtype}{double}\ vf[4],\ \textcolor{keywordtype}{double}\ nSteps,\ \textcolor{keywordtype}{double}\ del,\ \textcolor{keywordtype}{bool}\ buffer)\ \{}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00190}00190\ \ \ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00191}00191\ \ \ \textcolor{comment}{//Serial.println("{}|\ simpleRamp\ :\ "{});}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00192}00192\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00193}00193\ \ \ \textcolor{comment}{//double\ prevVoltage;}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00194}00194\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00195}00195\ \ \ \mbox{\hyperlink{class_r_a_m_p_s_a7b9085914df8b81df869595a80ca26b3}{calcDv}}(channelsDac,\ vi,\ vf,\ nSteps);}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00196}00196\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00197}00197\ \ \ \textcolor{comment}{//\ Serial.print("{}dv\ :\ "{});}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00198}00198\ \ \ \textcolor{comment}{//\ \ \ for\ (int\ i\ =\ 0;\ i\ <\ 4;\ i++)\ \{}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00199}00199\ \ \ \textcolor{comment}{//\ \ \ \ \ \ Serial.print(dv[i],\ 6);}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00200}00200\ \ \ \textcolor{comment}{//\ \ \ \ \ \ Serial.print("{},\ "{});}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00201}00201\ \ \ \textcolor{comment}{//\ \ \ \}\ }}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00202}00202\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00203}00203\ \ \ \mbox{\hyperlink{class_r_a_m_p_s_adf1c30dc2d4d56ca57ad39edef05f0d9}{setVi}}(channelsDac,\ vi);}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00204}00204\ \ \ \textcolor{comment}{//\ Serial.println("{}"{});}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00205}00205\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00206}00206\ \ \ \textcolor{comment}{//\ Serial.print("{}Initial\ voltages:\ "{});}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00207}00207\ \ \ \textcolor{comment}{//\ \ \ for\ (int\ i\ =\ 0;\ i\ <\ 4;\ i++)\ \{}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00208}00208\ \ \ \textcolor{comment}{//\ \ \ \ \ \ Serial.print(dac.readVoltage(i));}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00209}00209\ \ \ \textcolor{comment}{//\ \ \ \ \ \ Serial.print("{},\ "{});}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00210}00210\ \ \ \textcolor{comment}{//\ \ \ \}\ }}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00211}00211\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00212}00212\ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{class_r_a_m_p_s_ac016c81f0b2cabe2b04a5861fa07f294}{buffer}})\ \{\mbox{\hyperlink{class_r_a_m_p_s_ad5d74da24d876a4fe62fdd08388c5383}{bufferRampIteration}}(channelsDac,\ vi,\ nSteps,\ del);\}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00213}00213\ \ \ \textcolor{keywordflow}{else}\ \{\mbox{\hyperlink{class_r_a_m_p_s_af33776eda68a6ac949d5ab717986712b}{simpleRampIteration}}(channelsDac,\ vi,\ nSteps,\ del);\}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00214}00214\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00215}00215\ \ \ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00216}00216\ \ \ \textcolor{comment}{//Serial.println("{}"{});}}
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00217}00217\ }
+\DoxyCodeLine{\Hypertarget{ramp_8cpp_source_l00218}00218\ \}}
+
+\end{DoxyCode}
