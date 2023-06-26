@@ -1,0 +1,27 @@
+var classAD4115 =
+[
+    [ "AD4115", "classAD4115.html#a0cbc5fe44b8ff771e9109e67ea6051d5", null ],
+    [ "adcMode", "classAD4115.html#aac4e474edfd743b06ade3ca7844b45a6", null ],
+    [ "adcModeMsg", "classAD4115.html#a1e411adef98c6bb434878ffedf2c2fc6", null ],
+    [ "bufferRampFullReading", "classAD4115.html#a45ff658cc47cc6246ffcb1b913cec91f", null ],
+    [ "configChannel", "classAD4115.html#a2e63269deaac8820da1dba3df23f985b", null ],
+    [ "configChannelMsg", "classAD4115.html#a91568ff35b1e833c29eae8a9e4b91eb5", null ],
+    [ "configChannelsTest", "classAD4115.html#ad6d2af288b642ed37d4efdc4b9fe7732", null ],
+    [ "dataReading", "classAD4115.html#a6fda2af1ec68c29a51feb23ba44eb0bc", null ],
+    [ "dataReadingMsg", "classAD4115.html#a5742f77de027715e8411915cfb5187b0", null ],
+    [ "disableAllChannels", "classAD4115.html#ac7e6b8f32ec72d0af6d2b7a41542589e", null ],
+    [ "disableAllChannelsMsg", "classAD4115.html#ae849067f7d9fc974051e29ac39d55d81", null ],
+    [ "fullReading", "classAD4115.html#a9234a47db79f7f1f247280b535ca3982", null ],
+    [ "generalConfig", "classAD4115.html#afd0075d25d6047b3d141c31f1ccb08ff", null ],
+    [ "interfaceMode", "classAD4115.html#ae3725c1b0523948f42c029593d2be639", null ],
+    [ "interfaceModeMsg", "classAD4115.html#a6469691e5361a1997ed155ccd2260ed8", null ],
+    [ "readId", "classAD4115.html#aec7b9d4670a67767579026f2b122384b", null ],
+    [ "resetAdc", "classAD4115.html#abbbe819d13095ebf0dbef2a7701513da", null ],
+    [ "setupConfig", "classAD4115.html#a7c1f99a3d9d42900a1c442aa2e20091d", null ],
+    [ "setupConfigMsg", "classAD4115.html#a8efbace5366afd4ee80011b680886ae3", null ],
+    [ "threeByteToInt", "classAD4115.html#abdd6a1d6e51ef730162ab42f711ade70", null ],
+    [ "twoByteToInt", "classAD4115.html#a5f7d96456494251f0dd5dbde5d134070", null ],
+    [ "updateChannelStates", "classAD4115.html#ace57ff34808034de2101671613807753", null ],
+    [ "voltageMap", "classAD4115.html#a3a38ddcf07b2523a40e6e45bf2065101", null ],
+    [ "waitDrdy", "classAD4115.html#aa8db977a1819b37f361fce54ecdfdc22", null ]
+];
