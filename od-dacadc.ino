@@ -105,6 +105,11 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
     Serial.println("V");
   }
 
+  else if (command == "INIT_DAC") {
+    dac.initialize();
+    Serial.println("DAC INITIALIZED");
+  }
+
   //ADC COMMANDS SECTION
   else if (command == "ADC_GET") {
     //Serial.println("TEST 11");
