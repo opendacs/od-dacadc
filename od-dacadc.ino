@@ -239,13 +239,6 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
     ramp_fs.simpleRamp(channelsDac, vi, vf, cmd[13].toInt(), std::atof(cmd[14].c_str()), true);
   }
 
-
-  //DEBUGGING COMMANDS SECTION
-  else if (command == "NOP") {
-    Serial.println("NOP");
-    return 0;
-  }
-
   else if (command == "CONFIG_CHANNELS_TEST"){
     adc.configChannelsTest();
     return 0;
@@ -265,6 +258,12 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
     uint8_t id = adc.readId();
     Serial.print("ID code is ");
     Serial.println(id);
+  }
+
+  // if command not found print "NOP\n"
+  else {
+    Serial.println("NOP");
+    return 0;
   }
 }
 
