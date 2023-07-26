@@ -751,8 +751,8 @@ double AD4115::fullReading(void) {
  *   3. Converts the read data to a decimal value using the `threeByteToInt()` function and stores it in the `_channelDecimals` array.
  *   4. Maps the decimal value to voltage using the `voltageMap()` function and stores it in the `_channelVoltages` array.
  * After processing all active channels, the function sets the `_adcSync` pin to HIGH. Finally, it iterates through all active
- * channels again and prints the channel number and corresponding voltage to the serial monitor using the `Serial.write()`
- * function. The function returns 0 indicating successful execution.
+ * channels again and prints the corresponding voltages in binary format to using the `Serial.write()` function.
+ * The function returns 0 indicating successful execution.
  *
  * @return 0 indicating successful execution.
  */
@@ -773,6 +773,7 @@ double AD4115::bufferRampFullReading(void) {
 
 	for (int i = 0; i < 16; i++) {
 		if (_channelStates[i] == 1) {
+			intToThreeByte(_channelDecimals[i]);
 			Serial.write(_dataRead[0]);
 			Serial.write(_dataRead[1]);
 			Serial.write(_dataRead[2]);
