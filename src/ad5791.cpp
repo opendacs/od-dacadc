@@ -81,10 +81,6 @@ spi_utils::Message AD5791::setVoltageMsg(double voltage) {
     msg.msg[0] = (byte)((decimal >> 16) | 16);  // Writes to dac register
     msg.msg[1] = (byte)((decimal >> 8) & 255);  // Writes first byte
     msg.msg[2] = (byte)(decimal & 255);  // Writes second byte
-    Serial.println("setVoltageMsg debugging: ");
-    Serial.println(msg.msg[0]);
-    Serial.println(msg.msg[1]);
-    Serial.println(msg.msg[2]);
     return msg;
 }
 
@@ -142,8 +138,6 @@ double AD5791::setVoltage(uint8_t channel, double voltage, bool updateOutputs) {
         // Updated voltage may be different than voltage parameter because of
         // resolution
         vReadings[channel] = bytesToVoltage(msg);
-        Serial.println("vReadings[channel]");
-        Serial.println(vReadings[channel]);
         return bytesToVoltage(msg);    
     }
 }
@@ -404,10 +398,6 @@ double AD5791::readDac(uint8_t channel) {
     }
 
     double voltage = threeByteToVoltage(data[0], data[1], data[2]);
-    Serial.println("data 0, 1, 2");
-    Serial.println(data[0]);
-    Serial.println(data[1]);
-    Serial.println(data[2]);
     return(voltage);
 
 }
