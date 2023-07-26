@@ -20,6 +20,7 @@ private:
 	//Functions
 	uint32_t twoByteToInt(byte db1, byte db2);
 	double threeByteToInt(uint8_t db1, uint8_t db2, uint8_t db3);
+	void intToThreeByte(uint32_t decimal);
 	double voltageMap(double decimal);
 	void waitDrdy(void);
 	

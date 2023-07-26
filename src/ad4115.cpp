@@ -620,6 +620,25 @@ double AD4115::threeByteToInt(uint8_t db1, uint8_t db2, uint8_t db3) {
 }
 
 /**
+ * @brief Divides an integer number into three bytes.
+ *
+ * This function divides an integer number into three bytes (db1, db2, db3) by performing bitwise operations.
+ * The resulting bytes d1, db2 and db3 are assigned to _dataRead[0], _dataRead[1] and _dataRead[2], respectively.
+ *
+ * @param decimal The integer to be divided.
+ * @return None.
+ */
+void AD4115::intToThreeByte(uint32_t decimal) {
+	uint8_t db1 = decimal >> 16;
+	uint8_t db2 = (decimal >> 8) - (db1 << 8);
+	uint8_t db3 = decimal - ((db2 << 8) + (db1 << 8));
+
+	_dataRead[0] = db1;
+	_dataRead[1] = db2;
+	_dataRead[2] = db3;
+}
+
+/**
  * @brief Generates a data reading message for the AD4115 ADC.
  *
  * This function generates a data reading message for the AD4115 ADC. The message is used to request data from the ADC.
