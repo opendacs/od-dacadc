@@ -6,7 +6,6 @@
 
   Author: Benjamin Muñoz Cerro - Feldman Lab
   Creation Date: 28 March 2023
-  Last Updated: 28 March 2023
 */
 
 #include "include/ad5791.h"
@@ -112,7 +111,6 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
 
   //ADC COMMANDS SECTION
   else if (command == "ADC_GET") {
-    //Serial.println("TEST 11");
     voltage = adc.fullReading();
     return 0;
   }
@@ -162,32 +160,6 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
       vf[i - 9] = std::atof(cmd[i].c_str());  
     }
     
-    //Debugging prints
-    Serial.print("channelsDAC : ");
-    for (int i = 0; i < 4; i++) {
-       Serial.print(channelsDac[i]);
-       Serial.print(", ");
-    } 
-
-    Serial.println("");
-
-    Serial.print("vi : ");
-    for (int i = 0; i < 4; i++) {
-       Serial.print(vi[i]);
-       Serial.print(", ");
-    } 
-    
-    Serial.println("");
-
-    Serial.print("vf : ");
-    for (int i = 0; i < 4; i++) {
-       Serial.print(vf[i]);
-       Serial.print(", ");       
-    } 
-
-    Serial.println("");
-
-
     //inputs: RAMP, ch1, ch2, ch3, ch4, vi1, vi2, vi3, vi4, vf1, vf2, vf3, vf4, nsteps, delay, buffer
     ramp_fs.simpleRamp(channelsDac, vi, vf, cmd[13].toInt(), std::atof(cmd[14].c_str()), false);
   }
@@ -213,32 +185,6 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
     for (int i = 9; i < 13; i++){
       vf[i - 9] = std::atof(cmd[i].c_str());  
     }
-    
-    //Debugging prints
-    // Serial.print("channelsDAC : ");
-    // for (int i = 0; i < 4; i++) {
-    //    Serial.print(channelsDAC[i]);
-    //    Serial.print(", ");
-    // } 
-
-    // Serial.println("");
-
-    // Serial.print("vi : ");
-    // for (int i = 0; i < 4; i++) {
-    //    Serial.print(vi[i]);
-    //    Serial.print(", ");
-    // } 
-    
-    // Serial.println("");
-
-    // Serial.print("vf : ");
-    // for (int i = 0; i < 4; i++) {
-    //    Serial.print(vf[i]);
-    //    Serial.print(", ");       
-    // } 
-
-    // Serial.println("");
-
 
     //inputs: RAMP, ch1, ch2, ch3, ch4, vi1, vi2, vi3, vi4, vf1, vf2, vf3, vf4, nsteps, delay, buffer
     ramp_fs.simpleRamp(channelsDac, vi, vf, cmd[13].toInt(), std::atof(cmd[14].c_str()), true);
