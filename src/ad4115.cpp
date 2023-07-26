@@ -79,33 +79,12 @@ spi_utils::Message AD4115::disableAllChannelsMsg(void) {
 
 	    // 4 LSB are Channel address
 	    data.data[3 * chl] = msg.msg[0]; 
-	    
-	    Serial.print("data[");
-    	Serial.print(3*chl);
-    	Serial.print("] : ");
-    	Serial.println(data.data[3 * chl]);
 
 	    // Disable channel 
 	    data.data[(3 * chl) + 1] = msg.msg[1];
-	    
-	    Serial.print("data[");
-    	Serial.print((3 * chl) + 1);
-    	Serial.print("] : ");
-    	Serial.println(data.data[(3 * chl) + 1]);
 
 	    //Irrelevant
 	    data.data[(3 * chl) + 2] = msg.msg[2];
-	    
-	    Serial.print("data[");
-    	Serial.print((3 * chl) + 2);
-    	Serial.print("] : ");
-    	Serial.println(data.data[(3 * chl) + 2]);
-    }
-
-    for (int i = 0; i < 16; i++) {
-    	Serial.print("Channel ");
-    	Serial.println(i);
-    	Serial.println(_channelStates[i]);
     }
     return data;
 }
@@ -135,7 +114,6 @@ uint8_t AD4115::disableAllChannels(void) {
         for (uint8_t db = 0; db < data.blockSize; db++) {
 
             SPI.transfer(data.data[block * data.blockSize + db]);
-            Serial.println(data.data[block * data.blockSize + db]);
         }
         digitalWrite(_adcSync, HIGH);
     }
@@ -230,16 +208,10 @@ spi_utils::Message AD4115::configChannelMsg(uint8_t channel, uint8_t state, uint
 	channel_inputs = ((channel_data & channel_inputs_mask) >> 0);
 	
 	msg.msg[0] = channel_reg;
-	Serial.println("channel_reg");
-	Serial.println(channel_reg);
 	
 	msg.msg[1] = channel_setup;
-	Serial.println("channel_setup");
-	Serial.println(channel_setup);
 	
 	msg.msg[2] = channel_inputs;
-	Serial.println("channel_inputs");
-	Serial.println(channel_inputs);
 
 	return msg;
 }	
@@ -277,9 +249,6 @@ uint8_t AD4115::configChannel(uint8_t channel, uint8_t state,  uint8_t setup, ui
         for (uint8_t db = 0; db < msg.blockSize; db++) {
 
             SPI.transfer(msg.msg[block * msg.blockSize + db]);
-            Serial.print("configChannel ");
-            Serial.println(db);
-            Serial.println(msg.msg[block * msg.blockSize + db]);
         }
 
         //Temporary HIGH just for debugging purposes
@@ -287,12 +256,6 @@ uint8_t AD4115::configChannel(uint8_t channel, uint8_t state,  uint8_t setup, ui
 
     }
     SPI.endTransaction();
-
-    for (int i = 0; i < 16; i++) {
-    	Serial.print("Channel ");
-    	Serial.println(i);
-    	Serial.println(_channelStates[i]);
-    }
 
     return 0;
 }
@@ -403,7 +366,6 @@ uint8_t AD4115::setupConfig(void) {
     }
     SPI.endTransaction();
 
-    Serial.println("Setup config done");
     return 0;
 }
 
@@ -553,8 +515,6 @@ spi_utils::Message AD4115::adcModeMsg() {
  * @return None.
  */
 void AD4115::adcMode(void) {
-
-	Serial.println("BeginningOfAdcMode");
 	spi_utils::Message msg = adcModeMsg();
 
 	msg.blockSize = 3;
@@ -735,13 +695,10 @@ void AD4115::dataReading(void) {
  */
 double AD4115::fullReading(void) {
 	adcMode();
-	Serial.println("EndOfAdcMode");
-
 	for (int i = 0; i < 16; i++) {
 		if (_channelStates[i] == 1) {
-			Serial.println("BeforeWait");
+
 			waitDrdy();
-			Serial.println("AfterWait");
 
 			dataReading();
 
@@ -761,7 +718,6 @@ double AD4115::fullReading(void) {
 			Serial.println("V");
 		}
 	}
-	Serial.println("EndOfFullReading");
 	return 0;
 }
 
@@ -796,27 +752,11 @@ double AD4115::bufferRampFullReading(void) {
 
 	digitalWrite(_adcSync, HIGH);
 
-	//uint8_t buf[3] = {_dataRead[0], _dataRead[1], _dataRead[2]};
-
 	for (int i = 0; i < 16; i++) {
 		if (_channelStates[i] == 1) {
-			//Serial.write(buf, 3);
 			Serial.write(_dataRead[0]);
-
-			Serial.println("_");
 			Serial.write(_dataRead[1]);
-			Serial.println("_");
 			Serial.write(_dataRead[2]);
-			Serial.println("_");
-			// Serial.println("after Serial.write()");
-			// Serial.read();
-			// Serial.read();
-			// Serial.read();
-			// Serial.print("Channel ");
-			// Serial.print(i);
-			// Serial.print(":");
-			Serial.print(_channelVoltages[i],6);
-			// Serial.println("V");
 		}
 	}
 	return 0;
