@@ -317,21 +317,21 @@ spi_utils::Message AD4115::setupConfigMsg(void) {
 
 	spi_utils::Message msg;
     
+	// 0 -- WEN [7]
+	// 0 -- WRITE [6]
     // 100000 -- Address [0:5] (e.g. Setup 0)
-    // 0 -- WRITE [6]
-    // 0 -- WEN [7]
     msg.msg[0] = 0x20; // Send 0010 0000 == 32
 
+	// Reserved [13:15] -- 000
+	// Bipolar/unipolar output coding [12] -- 1 (e.g. bipolar)
+	// Enable/disable REF(+) input buffer [11] -- 1 (e.g. enabled)
+	// Enable/disable REF(-) input buffer [10] -- 1 (e.g. enabled)
     // Enable/disable input buffers [8:9] -- 11 (e.g. enabled)
-    // Enable/disable REF(-) input buffer [10] -- 0 (e.g. disabled)
-    // Enable/disable REF(+) input buffer [11] -- 0 (e.g. disabled)
-    // Bipolar/unipolar output coding [12] -- 1 (e.g. bipolar)
-    // Reserved [13:15] -- 000
-    msg.msg[1] = 0x13; // Send 0001 0011 = 19
+    msg.msg[1] = 0x1F; // Send 0001 1111 = 31
     
+	// Reserved [6:7] -- 00
+	// Select ref source [4:5] -- 00 (e.g. external ref)
     // Reserved [0:3] -- 0000
-    // Select ref source [4:5] -- 00 (e.g. external ref)
-    // Reserved [6:7] -- 00
     msg.msg[2] = 0x00; // Send 0000 0000 = 0
 
     return msg;
@@ -382,25 +382,25 @@ spi_utils::Message AD4115::interfaceModeMsg(void) {
 
 	spi_utils::Message msg;
 
+	// 0 -- WEN [7]
+	// 0 -- WRITE [6]
     // 000010 -- Address [0:5]
-    // 0 -- WRITE [6]
-    // 0 -- WEN [7]
     msg.msg[0] = 0x02; // Send 0000 0010
 
+	// Reserved [13:15] -- 000
+	// ALT_SYNC [12] -- 0 (e.g. disabled)
+	// Drive strength of DOUT/DRY pin [11] -- 0 (e.g. disabled)
+	// Reserved [9:10] -- 00
     // DOUT_RESET [8] -- 0 (e.g. disabled)
-    // Reserved [9:10] -- 00
-    // Drive strength of DOUT/DRY pin [11] -- 0 (e.g. disabled)
-    // ALT_SYNC [12] -- 0 (e.g. disabled)
-    // Reserved [13:15] -- 000
     msg.msg[1] = 0x00; // Send 0000 0000
 
+	// Enables continue read mode [7] -- 0 (e.g. disabled)
+	// DATA_STAT [6] -- 0 (e.g. disabled)
+	// Register intgrity checker [5] -- 0 (e.g. disabled)
+	// Reserved [4] -- 0
+	// CRC protection [2:3] -- 00 (e.g. disabled)
+	// Reserved [1] -- 0
     // Change ADC to 16 bits [0] -- 0 (e.g. 24 bits)
-    // Reserved [1] -- 0
-    // CRC protection [2:3] -- 00 (e.g. disabled)
-    // Reserved [4] -- 0
-    // Register intgrity checker [5] -- 0 (e.g. disabled)
-    // DATA_STAT [6] -- 0 (e.g. disabled)
-    // Enables continue read mode [7] -- 0 (e.g. disabled)
     msg.msg[2] = 0x00; // Send 0000 0000
 
     return msg;
@@ -481,22 +481,22 @@ spi_utils::Message AD4115::adcModeMsg() {
 	
 	spi_utils::Message msg;
 
-    // 000001 -- Address [0:5]
-    // 0 -- WRITE [6]
-    // 0 -- WEN [7]
+	// 000001 -- Address [0:5]
+	// 0 -- WRITE [6]
+	// 0 -- WEN [7]
     msg.msg[0] = 0x01; // Send 0000 0001 
 
+	// REF_EN [15] -- 0 (e.g. disabled)
+	// Reserved [14] -- 0
+	// ON if single channel active [13] -- 0 (e.g. disabled)
+	// Reserved [11:12] -- 00
     // Delay [8:10] -- 000 (e.g. 0 microsecs)
-    // Reserved [11:12] -- 00
-    // ON if single channel active [13] -- 0 (e.g. disabled)
-    // Reserved [14] -- 0
-    // REF_EN [15] -- 0 (e.g. disabled)
     msg.msg[1] = 0x00; // Send 0000 0000
 
+	// Reserved [7] -- 0
+	// Operating mode [4:6] -- 001 (e.g. single conversion mode)
+	// ADC clock source [2:3] -- 11 kk
     // Reserved [0:1] -- 00
-    // ADC clock source [2:3] -- 11 kk
-    // Operating mode [4:6] -- 001 (e.g. single conversion mode)
-    // Reserved [7] -- 0
     msg.msg[2] = 0x1C; // Send 0001 1100
 
     return msg;
@@ -531,7 +531,7 @@ void AD4115::adcMode(void) {
             SPI.transfer(msg.msg[block * msg.blockSize + db]);
         }
 
-        digitalWrite(_adcSync, LOW);
+        //digitalWrite(_adcSync, LOW);
     }
     SPI.endTransaction();
 }
@@ -590,9 +590,10 @@ uint8_t AD4115::updateChannelStates(void) {
 /**
  * @brief Maps the decimal value to voltage.
  *
- * This function maps a decimal value to voltage using a specific formula. It takes a decimal value as input,
- * divides it by 8388607 (2^23 - 1), subtracts 1, and multiplies the result by 25. The resulting value represents
- * the voltage mapped from the decimal input. The function returns the mapped voltage as a double precision value.
+ * Only mapping to bipolar code is implemented. This function maps a decimal value to voltage using a specific formula.
+ * It takes a decimal value as input, divides it by 8388608 (2^23), subtracts 1, and multiplies the result by 25.
+ * The resulting value represents the voltage mapped from the decimal input. The function returns the mapped voltage
+ * as a double precision value.
  *
  * @param decimal The decimal value to be mapped to voltage.
  * @return The mapped voltage as a double precision value.

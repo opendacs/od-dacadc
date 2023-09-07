@@ -125,7 +125,7 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
 
   else if (command == "ADC_CONFIG") {
     uint8_t data = adc.generalConfig(cmd[1].toInt(), cmd[2].toInt(), cmd[3].toInt(), cmd[4].toInt(), cmd[5].toInt());
-    Serial.println(data);
+    //Serial.println(data);
   }
 
   else if (command == "SETUP_CONFIG") {
@@ -134,7 +134,7 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
 
   else if (command == "DISABLE_ALL_CHANNELS") {
     uint8_t data = adc.disableAllChannels();
-    Serial.println(data);
+    //Serial.println(data);
   }
 
   //RAMP FUNCTIONS SECTION
