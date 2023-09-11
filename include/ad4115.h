@@ -60,7 +60,7 @@ public:
 	uint8_t updateChannelStates(void);
 	//Iterates through array and counts the 1s--returns integer
 	double fullReading(void);
-	double bufferRampFullReading(void);
+	double bufferRampFullReading(uint8_t channelsAdc[16]);
 	uint8_t resetAdc(void);
 
 	//Test functions

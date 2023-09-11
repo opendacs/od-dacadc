@@ -771,7 +771,7 @@ double AD4115::fullReading(void) {
  *
  * @return 0 indicating successful execution.
  */
-double AD4115::bufferRampFullReading(void) {
+double AD4115::bufferRampFullReading(uint8_t channelsAdc[16]) {
 	adcMode();
 
 	for (int i = 0; i < 16; i++) {
@@ -787,7 +787,7 @@ double AD4115::bufferRampFullReading(void) {
 	digitalWrite(_adcSync, HIGH);
 
 	for (int i = 0; i < 16; i++) {
-		if (_channelStates[i] == 1) {
+		if (channelsAdc[i] == 1) {
 			intToThreeByte(_channelDecimals[i]);
 			Serial.write(_dataRead[0]);
 			Serial.write(_dataRead[1]);
