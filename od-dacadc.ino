@@ -16,6 +16,11 @@
 #include <stdint.h>
 #include <cstdlib>
 
+const uint8_t kDacNChannels = 4;
+const uint8_t kAdcNChannels = 16;
+const uint8_t kAdcSEChannels = 8;
+const uint8_t kAdcDFChannels = (kAdcNChannels-kAdcSEChannels)/2;
+
 /**
  * @file main.cpp
  * @brief Initializing objects for DAC, ADC, and RAMPS functionality.
@@ -44,9 +49,34 @@ It also resets the ADC.
 */
 void setup() {
   Serial.begin(115200);
-  dac.begin(); 
+  dac.begin();
+
+  // Sets DAC outputs to zero before initialization
+  for (uint32_t i = 0; i < kDacNChannels; i++) {
+    dac.setVoltage(i, 0, true); 
+  }
   dac.initialize();
   adc.resetAdc();
+
+  // Dissable all channels
+  adc.disableAllChannels();
+  
+  // Config of all single end channels on Setup0
+  for (uint32_t i = 0; i < kAdcSEChannels; i++)
+  {
+    adc.configChannel(i, 1, 0, i, 16);
+  }
+
+  // Config of all differential end channels on Setup0
+  uint32_t j = 0;
+  for (uint32_t i = kAdcSEChannels; i < kAdcSEChannels+kAdcDFChannels; i++)
+  {
+    adc.configChannel(i, 1, 0, i+j, i+j+1);
+    j++;
+  }
+  // Only Setup0 supported for now.
+  adc.setupConfig();
+  adc.interfaceMode();
 }
 
 /**
