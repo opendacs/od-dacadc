@@ -183,22 +183,33 @@ spi_utils::Message AD4115::configChannelMsg(uint8_t channel, uint8_t state, uint
 					}
 					else {
 						Serial.println("INPUT 2 OUT OF RANGE");
+						msg.errorMessage();
+						return msg;
 					}
 				}
 				else {
 					Serial.println("INPUT 1 OUT OF RANGE");
+					msg.errorMessage();
+					return msg;
 				}
 			}
 			else {
 				Serial.println("INVALID INPUTS PAIR");
+				msg.errorMessage();
+				Serial.println(msg.msg[0]);
+				return msg;
 			}
 		}
 		else {
 			Serial.println("INVALID SETUP");
+			msg.errorMessage();
+			return msg;
 		}
 	}
 	else {
 		Serial.println("INVALID STATE");
+		msg.errorMessage();
+		return msg;
 	}
 
 	uint16_t channel_setup_mask = 0xFF00;
@@ -235,6 +246,9 @@ spi_utils::Message AD4115::configChannelMsg(uint8_t channel, uint8_t state, uint
 uint8_t AD4115::configChannel(uint8_t channel, uint8_t state,  uint8_t setup, uint8_t input_1, uint8_t input_2) {
 
 	spi_utils::Message msg = configChannelMsg(channel, state, setup, input_1, input_2);
+	if (msg.msg[0]==0xFF){
+		return 1;
+	}
 
 	SPI.beginTransaction(adcSettings);
 
