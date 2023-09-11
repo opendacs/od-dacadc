@@ -227,7 +227,7 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
       }
     }
 
-    uint32_t nSteps = cmd[iterator].toInt();
+    uint32_t nPoints = cmd[iterator].toInt();
     iterator++;
 
     uint32_t delay = cmd[iterator].toInt();
@@ -243,7 +243,7 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
     }
 
     //inputs: RAMP, ch1, ch2, ch3, ch4, vi1, vi2, vi3, vi4, vf1, vf2, vf3, vf4, nsteps, delay, buffer
-    ramp_fs.bufferRamp(channelsDac, vi, vf, nSteps, delay, channelsAdc);
+    ramp_fs.bufferRamp(channelsDac, vi, vf, nPoints, delay, channelsAdc);
   }
 
   else if (command == "CONFIG_CHANNELS_TEST"){
