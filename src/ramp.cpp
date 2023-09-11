@@ -131,7 +131,7 @@ uint8_t RAMPS::simpleRampIteration(uint8_t channelsDac[4], double vi[4], double 
  * @param del The delay in milliseconds between each step of the ramp.
  * @return void
  */
-uint8_t RAMPS::bufferRampIteration(uint8_t channelsDac[4], double vi[4], double nSteps, double del) {
+uint8_t RAMPS::bufferRampIteration(uint8_t channelsDac[4], double vi[4], uint32_t nSteps, uint32_t del, uint8_t channelsAdc[16]) {
 
   double dv_j;
 
@@ -139,8 +139,7 @@ uint8_t RAMPS::bufferRampIteration(uint8_t channelsDac[4], double vi[4], double 
   delay(del);
 
   //Initial reading before first step
-  adc.bufferRampFullReading();
-
+  adc.bufferRampFullReading(channelsAdc);
 
   for (int i = 0; i < nSteps; i++) {
     for (int j = 0; j < 4; j++) {
@@ -160,7 +159,7 @@ uint8_t RAMPS::bufferRampIteration(uint8_t channelsDac[4], double vi[4], double 
     delay(del);
 
     //Read
-    adc.bufferRampFullReading();
+    adc.bufferRampFullReading(channelsAdc);
   }
   return 0;
 }
@@ -186,7 +185,7 @@ uint8_t RAMPS::bufferRampIteration(uint8_t channelsDac[4], double vi[4], double 
  * @param buffer Indicates whether to use buffer ramp iteration (true) or simple ramp iteration (false).
  * @return void
  */
-uint8_t RAMPS::simpleRamp(uint8_t channelsDac[4], double vi[4], double vf[4], double nSteps, double del, bool buffer) {
+uint8_t RAMPS::simpleRamp(uint8_t channelsDac[4], double vi[4], double vf[4], double nSteps, double del) {
   
   //Serial.println("| simpleRamp : ");
 
@@ -209,10 +208,39 @@ uint8_t RAMPS::simpleRamp(uint8_t channelsDac[4], double vi[4], double vf[4], do
   //      Serial.print(", ");
   //   } 
 
-  if (buffer) {bufferRampIteration(channelsDac, vi, nSteps, del);}
-  else {simpleRampIteration(channelsDac, vi, nSteps, del);}
+  simpleRampIteration(channelsDac, vi, nSteps, del);
 
   
+  //Serial.println("");
+
+}
+
+
+uint8_t RAMPS::bufferRamp(uint8_t channelsDac[4], double vi[4], double vf[4], uint32_t nSteps, uint32_t del, uint8_t channelsAdc[16]) {
+  
+  //Serial.println("| simpleRamp : ");
+
+  //double prevVoltage;
+
+  calcDv(channelsDac, vi, vf, nSteps);
+
+  // Serial.print("dv : ");
+  //   for (int i = 0; i < 4; i++) {
+  //      Serial.print(dv[i], 6);
+  //      Serial.print(", ");
+  //   } 
+
+  setVi(channelsDac, vi);
+  // Serial.println("");
+
+  // Serial.print("Initial voltages: ");
+  //   for (int i = 0; i < 4; i++) {
+  //      Serial.print(dac.readVoltage(i));
+  //      Serial.print(", ");
+  //   } 
+
+  bufferRampIteration(channelsDac, vi, nSteps, del, channelsAdc);
+
   //Serial.println("");
 
 }
