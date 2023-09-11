@@ -55,6 +55,12 @@ namespace spi_utils
         /// a sync_pin_ to HIGH. (blockSize*nBlocks <= kDataLen)
         ///
         uint8_t nBlocks;
+
+        void errorMessage(){
+            for (size_t i = 0; i < kDataLen; i++) {
+                msg[i] = 0xFF;
+            }    
+        }
       };
 
     //   uint8_t data_transfer(uint8_t data[], uint8_t blockSize, uint8_t nBlocks, uint8_t sync_pin) {
