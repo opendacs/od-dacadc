@@ -191,7 +191,7 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
     }
     
     //inputs: RAMP, ch1, ch2, ch3, ch4, vi1, vi2, vi3, vi4, vf1, vf2, vf3, vf4, nsteps, delay, buffer
-    ramp_fs.simpleRamp(channelsDac, vi, vf, cmd[13].toInt(), std::atof(cmd[14].c_str()), false);
+    ramp_fs.simpleRamp(channelsDac, vi, vf, cmd[13].toInt(), std::atof(cmd[14].c_str()));
   }
 
   else if (command == "BUFFER_RAMP") {
@@ -201,23 +201,49 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
     double vi[4] = {0, 0, 0, 0};
     double vf[4] = {0, 0, 0, 0};
 
+    uint8_t nChannelsDac = cmd[1].toInt();
+
+    uint32_t iterator = 2;
     //Create channelsDAC array of size [4]
-    for (int i = 1; i < 5; i++){
-      channelsDac[i - 1] = cmd[i].toInt();  
+    for (uint32_t i = iterator; i < iterator+nChannelsDac; i++) {
+      channelsDac[cmd[i].toInt()] = 1;  
     }
 
+    iterator += nChannelsDac;
+
     //Create vi array of size [4]
-    for (int i = 5; i < 9; i++){
-      vi[i - 5] = std::atof(cmd[i].c_str());  
+    for (uint32_t i = 0; i < 4; i++) {
+      if (channelsDac[i]) {
+        vi[i] = cmd[iterator].toFloat();
+        iterator++;
+      }
     }
 
     //Create vf array of size [4]
-    for (int i = 9; i < 13; i++){
-      vf[i - 9] = std::atof(cmd[i].c_str());  
+    for (uint32_t i = 0; i < 4; i++) {
+      if (channelsDac[i]) {
+        vf[i] = cmd[iterator].toFloat();
+        iterator++;
+      }
+    }
+
+    uint32_t nSteps = cmd[iterator].toInt();
+    iterator++;
+
+    uint32_t delay = cmd[iterator].toInt();
+    iterator++;
+
+    uint32_t nChannelsAdc = cmd[iterator].toInt();
+    iterator++;
+
+    //Create channelsAdc array of size [16]
+    uint8_t channelsAdc[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    for (uint32_t i = iterator; i < iterator+nChannelsAdc; i++) {
+      channelsAdc[cmd[i].toInt()] = 1;  
     }
 
     //inputs: RAMP, ch1, ch2, ch3, ch4, vi1, vi2, vi3, vi4, vf1, vf2, vf3, vf4, nsteps, delay, buffer
-    ramp_fs.simpleRamp(channelsDac, vi, vf, cmd[13].toInt(), std::atof(cmd[14].c_str()), true);
+    ramp_fs.bufferRamp(channelsDac, vi, vf, nSteps, delay, channelsAdc);
   }
 
   else if (command == "CONFIG_CHANNELS_TEST"){
