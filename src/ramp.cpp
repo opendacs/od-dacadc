@@ -34,11 +34,6 @@ uint8_t RAMPS::setVi(uint8_t channelsDac[4], double vi[4]) {
   for (int i = 0; i < 4; i ++) {
 		if (channelsDac[i] == 1) {
 			voltage = dac.setVoltage(i, vi[i], true);
-      // Serial.println("DAC ");
-		  // Serial.print(i);
-      // Serial.print(" | SET INITIALLY TO ");
-      // Serial.print(vi[i]);
-      // Serial.println(voltage);
     }
 	}
 }
@@ -63,7 +58,6 @@ double RAMPS::calcDv(uint8_t channelsDac[4], double vi[4], double vf[4], double 
       dv[i] = (vf[i] - vi[i]) / nSteps;			
 		}
 	}
-  //Serial.println("");
 
 	return 0;
 }
@@ -115,15 +109,9 @@ uint8_t RAMPS::simpleRampIteration(uint8_t channelsDac[4], double vi[4], double 
 /**
  * @brief Performs a buffer ramp iteration for the specified channels on the RAMPS board.
  *
- * This function performs a buffer ramp iteration for the specified channels on the RAMPS board. The ramp iteration
- * is controlled by the 'nSteps' parameter, which determines the number of steps in the ramp. The 'vi' array contains
- * the initial voltage values for each corresponding channel. The 'del' parameter specifies the delay in milliseconds
- * between each step of the ramp. The ramp iteration updates the voltage of each channel incrementally based on the
- * voltage step size previously calculated and stored in the 'dv' array. The updated voltage values are applied to
+ * One iteration of **bufferRamp**. Check **bufferRamp** for the algorithm. The updated voltage values are applied to
  * the DAC channels using the 'setVoltage' function. The LDAC pin is set to low to update all channels simultaneously
- * after each step of the ramp. The function includes calls to the 'bufferRampFullReading' function to read the ADC
- * values after each step of the ramp. Optional Serial print statements can be uncommented for debugging or logging
- * purposes.
+ * after each step of the ramp. The function includes calls to the 'bufferRampFullReading' function to read the ADCs.
  *
  * @param channelsDac An array indicating which channels to perform the ramp iteration on.
  * @param vi An array of initial voltage values for each corresponding channel.
@@ -152,8 +140,6 @@ uint8_t RAMPS::bufferRampIteration(uint8_t channelsDac[4], double vi[4], uint32_
 
         //Update channel i voltage
         dac.setVoltage(j, vi[j] + ((i+1)*dv_j), false);
-        //Serial.print("vReadings[j]: ");
-        //Serial.println(dac.vReadings[j]);
       }
     }
     //set LDAC pin to low to update all channels simultaneously
@@ -176,50 +162,44 @@ uint8_t RAMPS::bufferRampIteration(uint8_t channelsDac[4], double vi[4], uint32_
  * values for each corresponding channel, and the 'vf' array contains the final voltage values. The 'del' parameter
  * specifies the delay in milliseconds between each step of the ramp. The ramp iteration updates the voltage of each
  * channel incrementally based on the voltage step size previously calculated and stored in the 'dv' array. The updated
- * voltage values are applied to the DAC channels using the 'setVi' function. If the 'buffer' parameter is set to true,
- * the ramp iteration will use the 'bufferRampIteration' function, which includes ADC readings after each step. If set
- * to false, the 'simpleRampIteration' function will be used instead. Optional Serial print statements can be uncommented
- * for debugging or logging purposes.
+ * voltage values are applied to the DAC channels using the 'setVi' function.
  *
  * @param channelsDac An array indicating which channels to perform the ramp on.
  * @param vi An array of initial voltage values for each corresponding channel.
  * @param vf An array of final voltage values for each corresponding channel.
  * @param nSteps The number of steps in the ramp.
  * @param del The delay in milliseconds between each step of the ramp.
- * @param buffer Indicates whether to use buffer ramp iteration (true) or simple ramp iteration (false).
  * @return void
  */
 uint8_t RAMPS::simpleRamp(uint8_t channelsDac[4], double vi[4], double vf[4], double nSteps, double del) {
-  
-  //Serial.println("| simpleRamp : ");
-
-  //double prevVoltage;
-
   calcDv(channelsDac, vi, vf, nSteps);
 
-  // Serial.print("dv : ");
-  //   for (int i = 0; i < 4; i++) {
-  //      Serial.print(dv[i], 6);
-  //      Serial.print(", ");
-  //   } 
-
   setVi(channelsDac, vi);
-  // Serial.println("");
-
-  // Serial.print("Initial voltages: ");
-  //   for (int i = 0; i < 4; i++) {
-  //      Serial.print(dac.readVoltage(i));
-  //      Serial.print(", ");
-  //   } 
 
   simpleRampIteration(channelsDac, vi, nSteps, del);
-
-  
-  //Serial.println("");
-
 }
 
 
+/**
+ * @brief Performs a buffer ramp for the specified channels on the RAMPS board.
+ *
+ * This function performs a buffer ramp for the specified channels on the RAMPS board. The ramp is controlled by the
+ * 'nPoints' parameter, which determines the number of points in the ramp. The 'vi' array contains the initial voltage
+ * values for each corresponding channel, and the 'vf' array contains the final voltage values. The 'del' parameter
+ * specifies the delay in milliseconds between each point of the ramp. The ramp iteration updates the voltage of each
+ * channel incrementally based on the voltage step size previously calculated and stored in the 'dv' array. The updated
+ * voltage values are applied to the DAC channels using the 'setVi' function. All the DAC outputs are updated at the same time.
+ * After the DACs are updated and 'del' time has passed, the specified ADCs are measured. Check each DAC **bufferRampFullReading**
+ * for specific serial writing syntax.
+ *
+ * @param channelsDac An array[4] indicating which DAC channels to perform the ramp on. 1=on 0=off on each array element.
+ * @param vi An array of initial voltage values for each corresponding channel.
+ * @param vf An array of final voltage values for each corresponding channel.
+ * @param nPoints The number of points in the ramp.
+ * @param del The delay in milliseconds between each step of the ramp.
+ * @param channelsAdc An array[16] indicating which channels to read at each point. 1=on 0=off on each array element.
+ * @return void
+ */
 uint8_t RAMPS::bufferRamp(uint8_t channelsDac[4], double vi[4], double vf[4], uint32_t nPoints, uint32_t del, uint8_t channelsAdc[16]) {
   if (nPoints==0) {
     return 1;

@@ -765,10 +765,11 @@ double AD4115::fullReading(void) {
  *   2. Reads the data from the ADC using the `dataReading()` function.
  *   3. Converts the read data to a decimal value using the `threeByteToInt()` function and stores it in the `_channelDecimals` array.
  *   4. Maps the decimal value to voltage using the `voltageMap()` function and stores it in the `_channelVoltages` array.
- * After processing all active channels, the function sets the `_adcSync` pin to HIGH. Finally, it iterates through all active
- * channels again and prints the corresponding voltages in binary format to using the `Serial.write()` function.
+ * After processing all active `channelsAdc` channels, the function sets the `_adcSync` pin to HIGH. Finally, it iterates through all
+ * active `channelsAdc` channels again and prints the corresponding voltages in binary format to using the `Serial.write()` function.
  * The function returns 0 indicating successful execution.
- *
+ * 
+ * @param channelsAdc An array[16] indicating which channels to Serial.write().
  * @return 0 indicating successful execution.
  */
 double AD4115::bufferRampFullReading(uint8_t channelsAdc[16]) {
