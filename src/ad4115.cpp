@@ -183,22 +183,33 @@ spi_utils::Message AD4115::configChannelMsg(uint8_t channel, uint8_t state, uint
 					}
 					else {
 						Serial.println("INPUT 2 OUT OF RANGE");
+						msg.errorMessage();
+						return msg;
 					}
 				}
 				else {
 					Serial.println("INPUT 1 OUT OF RANGE");
+					msg.errorMessage();
+					return msg;
 				}
 			}
 			else {
 				Serial.println("INVALID INPUTS PAIR");
+				msg.errorMessage();
+				Serial.println(msg.msg[0]);
+				return msg;
 			}
 		}
 		else {
 			Serial.println("INVALID SETUP");
+			msg.errorMessage();
+			return msg;
 		}
 	}
 	else {
 		Serial.println("INVALID STATE");
+		msg.errorMessage();
+		return msg;
 	}
 
 	uint16_t channel_setup_mask = 0xFF00;
@@ -235,6 +246,9 @@ spi_utils::Message AD4115::configChannelMsg(uint8_t channel, uint8_t state, uint
 uint8_t AD4115::configChannel(uint8_t channel, uint8_t state,  uint8_t setup, uint8_t input_1, uint8_t input_2) {
 
 	spi_utils::Message msg = configChannelMsg(channel, state, setup, input_1, input_2);
+	if (msg.msg[0]==0xFF){
+		return 1;
+	}
 
 	SPI.beginTransaction(adcSettings);
 
@@ -317,21 +331,21 @@ spi_utils::Message AD4115::setupConfigMsg(void) {
 
 	spi_utils::Message msg;
     
+	// 0 -- WEN [7]
+	// 0 -- WRITE [6]
     // 100000 -- Address [0:5] (e.g. Setup 0)
-    // 0 -- WRITE [6]
-    // 0 -- WEN [7]
     msg.msg[0] = 0x20; // Send 0010 0000 == 32
 
+	// Reserved [13:15] -- 000
+	// Bipolar/unipolar output coding [12] -- 1 (e.g. bipolar)
+	// Enable/disable REF(+) input buffer [11] -- 1 (e.g. enabled)
+	// Enable/disable REF(-) input buffer [10] -- 1 (e.g. enabled)
     // Enable/disable input buffers [8:9] -- 11 (e.g. enabled)
-    // Enable/disable REF(-) input buffer [10] -- 0 (e.g. disabled)
-    // Enable/disable REF(+) input buffer [11] -- 0 (e.g. disabled)
-    // Bipolar/unipolar output coding [12] -- 1 (e.g. bipolar)
-    // Reserved [13:15] -- 000
-    msg.msg[1] = 0x13; // Send 0001 0011 = 19
+    msg.msg[1] = 0x1F; // Send 0001 1111 = 31
     
+	// Reserved [6:7] -- 00
+	// Select ref source [4:5] -- 00 (e.g. external ref)
     // Reserved [0:3] -- 0000
-    // Select ref source [4:5] -- 00 (e.g. external ref)
-    // Reserved [6:7] -- 00
     msg.msg[2] = 0x00; // Send 0000 0000 = 0
 
     return msg;
@@ -382,25 +396,25 @@ spi_utils::Message AD4115::interfaceModeMsg(void) {
 
 	spi_utils::Message msg;
 
+	// 0 -- WEN [7]
+	// 0 -- WRITE [6]
     // 000010 -- Address [0:5]
-    // 0 -- WRITE [6]
-    // 0 -- WEN [7]
     msg.msg[0] = 0x02; // Send 0000 0010
 
+	// Reserved [13:15] -- 000
+	// ALT_SYNC [12] -- 0 (e.g. disabled)
+	// Drive strength of DOUT/DRY pin [11] -- 0 (e.g. disabled)
+	// Reserved [9:10] -- 00
     // DOUT_RESET [8] -- 0 (e.g. disabled)
-    // Reserved [9:10] -- 00
-    // Drive strength of DOUT/DRY pin [11] -- 0 (e.g. disabled)
-    // ALT_SYNC [12] -- 0 (e.g. disabled)
-    // Reserved [13:15] -- 000
     msg.msg[1] = 0x00; // Send 0000 0000
 
+	// Enables continue read mode [7] -- 0 (e.g. disabled)
+	// DATA_STAT [6] -- 0 (e.g. disabled)
+	// Register intgrity checker [5] -- 0 (e.g. disabled)
+	// Reserved [4] -- 0
+	// CRC protection [2:3] -- 00 (e.g. disabled)
+	// Reserved [1] -- 0
     // Change ADC to 16 bits [0] -- 0 (e.g. 24 bits)
-    // Reserved [1] -- 0
-    // CRC protection [2:3] -- 00 (e.g. disabled)
-    // Reserved [4] -- 0
-    // Register intgrity checker [5] -- 0 (e.g. disabled)
-    // DATA_STAT [6] -- 0 (e.g. disabled)
-    // Enables continue read mode [7] -- 0 (e.g. disabled)
     msg.msg[2] = 0x00; // Send 0000 0000
 
     return msg;
@@ -481,22 +495,22 @@ spi_utils::Message AD4115::adcModeMsg() {
 	
 	spi_utils::Message msg;
 
-    // 000001 -- Address [0:5]
-    // 0 -- WRITE [6]
-    // 0 -- WEN [7]
+	// 000001 -- Address [0:5]
+	// 0 -- WRITE [6]
+	// 0 -- WEN [7]
     msg.msg[0] = 0x01; // Send 0000 0001 
 
+	// REF_EN [15] -- 0 (e.g. disabled)
+	// Reserved [14] -- 0
+	// ON if single channel active [13] -- 0 (e.g. disabled)
+	// Reserved [11:12] -- 00
     // Delay [8:10] -- 000 (e.g. 0 microsecs)
-    // Reserved [11:12] -- 00
-    // ON if single channel active [13] -- 0 (e.g. disabled)
-    // Reserved [14] -- 0
-    // REF_EN [15] -- 0 (e.g. disabled)
     msg.msg[1] = 0x00; // Send 0000 0000
 
+	// Reserved [7] -- 0
+	// Operating mode [4:6] -- 001 (e.g. single conversion mode)
+	// ADC clock source [2:3] -- 11 kk
     // Reserved [0:1] -- 00
-    // ADC clock source [2:3] -- 11 kk
-    // Operating mode [4:6] -- 001 (e.g. single conversion mode)
-    // Reserved [7] -- 0
     msg.msg[2] = 0x1C; // Send 0001 1100
 
     return msg;
@@ -531,7 +545,7 @@ void AD4115::adcMode(void) {
             SPI.transfer(msg.msg[block * msg.blockSize + db]);
         }
 
-        digitalWrite(_adcSync, LOW);
+        //digitalWrite(_adcSync, LOW);
     }
     SPI.endTransaction();
 }
@@ -590,9 +604,10 @@ uint8_t AD4115::updateChannelStates(void) {
 /**
  * @brief Maps the decimal value to voltage.
  *
- * This function maps a decimal value to voltage using a specific formula. It takes a decimal value as input,
- * divides it by 8388607 (2^23 - 1), subtracts 1, and multiplies the result by 25. The resulting value represents
- * the voltage mapped from the decimal input. The function returns the mapped voltage as a double precision value.
+ * Only mapping to bipolar code is implemented. This function maps a decimal value to voltage using a specific formula.
+ * It takes a decimal value as input, divides it by 8388608 (2^23), subtracts 1, and multiplies the result by 25.
+ * The resulting value represents the voltage mapped from the decimal input. The function returns the mapped voltage
+ * as a double precision value.
  *
  * @param decimal The decimal value to be mapped to voltage.
  * @return The mapped voltage as a double precision value.
@@ -617,6 +632,25 @@ double AD4115::voltageMap(double decimal) {
  */
 double AD4115::threeByteToInt(uint8_t db1, uint8_t db2, uint8_t db3) {
 	return ( (double) ( ( ( db1 << 8 ) + db2 ) << 8 ) + db3 );
+}
+
+/**
+ * @brief Divides an integer number into three bytes.
+ *
+ * This function divides an integer number into three bytes (db1, db2, db3) by performing bitwise operations.
+ * The resulting bytes d1, db2 and db3 are assigned to _dataRead[0], _dataRead[1] and _dataRead[2], respectively.
+ *
+ * @param decimal The integer to be divided.
+ * @return None.
+ */
+void AD4115::intToThreeByte(uint32_t decimal) {
+	uint8_t db1 = decimal >> 16;
+	uint8_t db2 = (decimal >> 8) - (db1 << 8);
+	uint8_t db3 = decimal - ((db2 << 8) + (db1 << 8));
+
+	_dataRead[0] = db1;
+	_dataRead[1] = db2;
+	_dataRead[2] = db3;
 }
 
 /**
@@ -731,13 +765,14 @@ double AD4115::fullReading(void) {
  *   2. Reads the data from the ADC using the `dataReading()` function.
  *   3. Converts the read data to a decimal value using the `threeByteToInt()` function and stores it in the `_channelDecimals` array.
  *   4. Maps the decimal value to voltage using the `voltageMap()` function and stores it in the `_channelVoltages` array.
- * After processing all active channels, the function sets the `_adcSync` pin to HIGH. Finally, it iterates through all active
- * channels again and prints the channel number and corresponding voltage to the serial monitor using the `Serial.write()`
- * function. The function returns 0 indicating successful execution.
- *
+ * After processing all active `channelsAdc` channels, the function sets the `_adcSync` pin to HIGH. Finally, it iterates through all
+ * active `channelsAdc` channels again and prints the corresponding voltages in binary format to using the `Serial.write()` function.
+ * The function returns 0 indicating successful execution.
+ * 
+ * @param channelsAdc An array[16] indicating which channels to Serial.write().
  * @return 0 indicating successful execution.
  */
-double AD4115::bufferRampFullReading(void) {
+double AD4115::bufferRampFullReading(uint8_t channelsAdc[16]) {
 	adcMode();
 
 	for (int i = 0; i < 16; i++) {
@@ -753,7 +788,8 @@ double AD4115::bufferRampFullReading(void) {
 	digitalWrite(_adcSync, HIGH);
 
 	for (int i = 0; i < 16; i++) {
-		if (_channelStates[i] == 1) {
+		if (channelsAdc[i] == 1) {
+			intToThreeByte(_channelDecimals[i]);
 			Serial.write(_dataRead[0]);
 			Serial.write(_dataRead[1]);
 			Serial.write(_dataRead[2]);

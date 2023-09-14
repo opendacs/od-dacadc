@@ -16,6 +16,11 @@
 #include <stdint.h>
 #include <cstdlib>
 
+const uint8_t kDacNChannels = 4;
+const uint8_t kAdcNChannels = 16;
+const uint8_t kAdcSEChannels = 8;
+const uint8_t kAdcDFChannels = (kAdcNChannels-kAdcSEChannels)/2;
+
 /**
  * @file main.cpp
  * @brief Initializing objects for DAC, ADC, and RAMPS functionality.
@@ -44,9 +49,34 @@ It also resets the ADC.
 */
 void setup() {
   Serial.begin(115200);
-  dac.begin(); 
+  dac.begin();
+
+  // Sets DAC outputs to zero before initialization
+  for (uint32_t i = 0; i < kDacNChannels; i++) {
+    dac.setVoltage(i, 0, true); 
+  }
   dac.initialize();
   adc.resetAdc();
+
+  // Dissable all channels
+  adc.disableAllChannels();
+  
+  // Config of all single end channels on Setup0
+  for (uint32_t i = 0; i < kAdcSEChannels; i++)
+  {
+    adc.configChannel(i, 1, 0, i, 16);
+  }
+
+  // Config of all differential end channels on Setup0
+  uint32_t j = 0;
+  for (uint32_t i = kAdcSEChannels; i < kAdcSEChannels+kAdcDFChannels; i++)
+  {
+    adc.configChannel(i, 1, 0, i+j, i+j+1);
+    j++;
+  }
+  // Only Setup0 supported for now.
+  adc.setupConfig();
+  adc.interfaceMode();
 }
 
 /**
@@ -125,7 +155,7 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
 
   else if (command == "ADC_CONFIG") {
     uint8_t data = adc.generalConfig(cmd[1].toInt(), cmd[2].toInt(), cmd[3].toInt(), cmd[4].toInt(), cmd[5].toInt());
-    Serial.println(data);
+    //Serial.println(data);
   }
 
   else if (command == "SETUP_CONFIG") {
@@ -134,7 +164,7 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
 
   else if (command == "DISABLE_ALL_CHANNELS") {
     uint8_t data = adc.disableAllChannels();
-    Serial.println(data);
+    //Serial.println(data);
   }
 
   //RAMP FUNCTIONS SECTION
@@ -161,7 +191,7 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
     }
     
     //inputs: RAMP, ch1, ch2, ch3, ch4, vi1, vi2, vi3, vi4, vf1, vf2, vf3, vf4, nsteps, delay, buffer
-    ramp_fs.simpleRamp(channelsDac, vi, vf, cmd[13].toInt(), std::atof(cmd[14].c_str()), false);
+    ramp_fs.simpleRamp(channelsDac, vi, vf, cmd[13].toInt(), std::atof(cmd[14].c_str()));
   }
 
   else if (command == "BUFFER_RAMP") {
@@ -171,23 +201,49 @@ uint8_t Router(String cmd[], uint8_t cmdSize) {
     double vi[4] = {0, 0, 0, 0};
     double vf[4] = {0, 0, 0, 0};
 
+    uint8_t nChannelsDac = cmd[1].toInt();
+
+    uint32_t iterator = 2;
     //Create channelsDAC array of size [4]
-    for (int i = 1; i < 5; i++){
-      channelsDac[i - 1] = cmd[i].toInt();  
+    for (uint32_t i = iterator; i < iterator+nChannelsDac; i++) {
+      channelsDac[cmd[i].toInt()] = 1;  
     }
 
+    iterator += nChannelsDac;
+
     //Create vi array of size [4]
-    for (int i = 5; i < 9; i++){
-      vi[i - 5] = std::atof(cmd[i].c_str());  
+    for (uint32_t i = 0; i < 4; i++) {
+      if (channelsDac[i]) {
+        vi[i] = cmd[iterator].toFloat();
+        iterator++;
+      }
     }
 
     //Create vf array of size [4]
-    for (int i = 9; i < 13; i++){
-      vf[i - 9] = std::atof(cmd[i].c_str());  
+    for (uint32_t i = 0; i < 4; i++) {
+      if (channelsDac[i]) {
+        vf[i] = cmd[iterator].toFloat();
+        iterator++;
+      }
+    }
+
+    uint32_t nPoints = cmd[iterator].toInt();
+    iterator++;
+
+    uint32_t delay = cmd[iterator].toInt();
+    iterator++;
+
+    uint32_t nChannelsAdc = cmd[iterator].toInt();
+    iterator++;
+
+    //Create channelsAdc array of size [16]
+    uint8_t channelsAdc[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    for (uint32_t i = iterator; i < iterator+nChannelsAdc; i++) {
+      channelsAdc[cmd[i].toInt()] = 1;  
     }
 
     //inputs: RAMP, ch1, ch2, ch3, ch4, vi1, vi2, vi3, vi4, vf1, vf2, vf3, vf4, nsteps, delay, buffer
-    ramp_fs.simpleRamp(channelsDac, vi, vf, cmd[13].toInt(), std::atof(cmd[14].c_str()), true);
+    ramp_fs.bufferRamp(channelsDac, vi, vf, nPoints, delay, channelsAdc);
   }
 
   else if (command == "CONFIG_CHANNELS_TEST"){

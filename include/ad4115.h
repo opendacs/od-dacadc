@@ -20,6 +20,7 @@ private:
 	//Functions
 	uint32_t twoByteToInt(byte db1, byte db2);
 	double threeByteToInt(uint8_t db1, uint8_t db2, uint8_t db3);
+	void intToThreeByte(uint32_t decimal);
 	double voltageMap(double decimal);
 	void waitDrdy(void);
 	
@@ -59,7 +60,7 @@ public:
 	uint8_t updateChannelStates(void);
 	//Iterates through array and counts the 1s--returns integer
 	double fullReading(void);
-	double bufferRampFullReading(void);
+	double bufferRampFullReading(uint8_t channelsAdc[16]);
 	uint8_t resetAdc(void);
 
 	//Test functions
