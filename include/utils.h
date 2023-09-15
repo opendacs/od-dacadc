@@ -56,6 +56,24 @@ namespace spi_utils
         ///
         uint8_t nBlocks;
 
+        void transfer(SPISettings settings, uint8_t syncPin, bool continue_tx){
+            SPI.beginTransaction(settings);
+
+            for (uint8_t block = 0; block < nBlocks; block++) {
+
+                digitalWrite(syncPin, LOW);
+
+                for (uint8_t db = 0; db < blockSize; db++) {
+
+                    SPI.transfer(msg[block * blockSize + db]);
+                }
+                if (!continue_tx) {
+                    digitalWrite(syncPin, HIGH);
+                }
+            }
+            SPI.endTransaction();
+        }
+
         void errorMessage(){
             for (size_t i = 0; i < kDataLen; i++) {
                 msg[i] = 0xFF;
